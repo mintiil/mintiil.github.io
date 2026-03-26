@@ -315,6 +315,8 @@
       border-top: 2px solid #ffe2d4;
       padding-top: 1.2rem;
     }
+
+    /* Music toggle button */
     .music-toggle {
       position: fixed;
       bottom: 20px;
@@ -346,6 +348,35 @@
       transform: scale(1.07);
       background: #ffdad0;
       color: #c64b62;
+    }
+    @keyframes pulse-attention {
+      0% { transform: scale(1); background: rgba(255, 200, 190, 0.95); }
+      100% { transform: scale(1.12); background: #ffb48a; box-shadow: 0 0 12px #ff8a7a; }
+    }
+    .music-toggle.pulse {
+      animation: pulse-attention 0.6s ease-in-out 2;
+    }
+
+    /* Toast message for audio errors */
+    .audio-toast {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(8px);
+      color: #ffefea;
+      padding: 8px 16px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      z-index: 100;
+      font-weight: 500;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+      white-space: nowrap;
+    }
+    .audio-toast.show {
+      opacity: 1;
     }
 
     @media (max-width: 650px) {
@@ -459,7 +490,7 @@
 </head>
 <body>
 
-<!-- SURPRISE OVERLAY (initial visible) -->
+<!-- SURPRISE OVERLAY -->
 <div class="surprise-overlay" id="surpriseOverlay">
   <div class="overlay-card">
     <i class="fas fa-heart"></i>
@@ -479,10 +510,12 @@
 <!-- Audio element (will be started after overlay click) -->
 <audio id="bgMusic" loop preload="auto">
   <source src="https://github.com/mintiil/mintiil.github.io/raw/refs/heads/main/surpriseeee/Smyang%20Piano%20-%20rm%20-%20%20tokyo%20lofi%20ver..m4a" type="audio/mpeg">
+  お使いのブラウザは audio 要素をサポートしていません。
 </audio>
 <div class="music-toggle" id="musicToggleBtn">
   <i class="fas fa-music"></i>
 </div>
+<div class="audio-toast" id="audioToast">🎵 音楽を再生できませんでした。ボタンをタップしてください</div>
 
 <div class="card-wrapper">
   <div class="anniversary-card">
@@ -527,7 +560,7 @@
       <div class="stat-item"><i class="fas fa-heart"></i><div class="stat-number">💕∞💕</div><div class="stat-label">Endless Love</div></div>
     </div>
 
-    <!-- Love message section with fixed button -->
+    <!-- Love message section -->
     <div class="love-message-box">
       <div class="love-text"><i class="fas fa-heart heart-float"></i> 大好きだよ、my darling <i class="fas fa-heart heart-float"></i></div>
       <button class="surprise-btn" id="surpriseMsgBtn"><i class="fas fa-envelope-open-text"></i> ラブレターを開く</button>
@@ -544,7 +577,16 @@
 
 <script>
   (function() {
-    // ----- SAKURA PETALS (create after reveal for performance, but we can create later) -----
+    // ----- Helper: show toast message -----
+    const toast = document.getElementById('audioToast');
+    function showToast(message, duration = 3000) {
+      if (!toast) return;
+      toast.textContent = message || "🎵 音楽を再生できませんでした。ボタンをタップしてください";
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), duration);
+    }
+
+    // ----- SAKURA PETALS (create after reveal) -----
     let sakuraCreated = false;
     function createSakura() {
       if (sakuraCreated) return;
@@ -574,14 +616,11 @@
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
       const counterElement = document.getElementById('daysCounter');
       if (counterElement) {
-        if (diffDays >= 0) {
-          counterElement.textContent = `❤️ ${diffDays} ❤️`;
-        } else {
-          counterElement.textContent = `✨ 0 ✨`;
-        }
+        counterElement.textContent = diffDays >= 0 ? `❤️ ${diffDays} ❤️` : `✨ 0 ✨`;
       }
     }
     updateDayCounter();
+    setInterval(updateDayCounter, 60000);
 
     // ----- ROMANTIC MESSAGES -----
     const loveMessages = [
@@ -599,31 +638,31 @@
       "💎 あなたと一緒にいるときが一番幸せ。3ヶ月、もっともっと深く愛してる。これからもよろしく💎"
     ];
 
-    // Typing animation logic
+    // Typing animation
     let currentTypingInterval = null;
     const msgDisplay = document.getElementById('randomMessageDisplay');
-    function stopTypingAnimation() {
+    function stopTyping() {
       if (currentTypingInterval) clearInterval(currentTypingInterval);
-      currentTypingInterval = null;
       if (msgDisplay) msgDisplay.classList.remove('typing-cursor');
     }
-    function typeMessageWithEffect(text, targetElement) {
-      stopTypingAnimation();
-      targetElement.innerHTML = "";
-      targetElement.classList.add('typing-cursor');
-      let index = 0;
+    function typeMessage(text, target) {
+      stopTyping();
+      target.innerHTML = "";
+      target.classList.add('typing-cursor');
+      let idx = 0;
       currentTypingInterval = setInterval(() => {
-        if (index < text.length) {
-          targetElement.innerHTML += text.charAt(index);
-          index++;
-          targetElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (idx < text.length) {
+          target.innerHTML += text.charAt(idx);
+          idx++;
+          target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         } else {
           clearInterval(currentTypingInterval);
           currentTypingInterval = null;
-          targetElement.classList.remove('typing-cursor');
+          target.classList.remove('typing-cursor');
         }
       }, 45);
     }
+
     function burstConfetti() {
       if (typeof canvasConfetti !== 'undefined') {
         canvasConfetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, startVelocity: 18, colors: ['#ff9a7c', '#ff6f91', '#ffb7c5', '#ffd966'] });
@@ -633,47 +672,54 @@
       }
     }
 
-    // Surprise button event (only after reveal)
-    document.addEventListener("DOMContentLoaded", () => {
-      const surpriseBtn = document.getElementById('surpriseMsgBtn');
-      if (surpriseBtn) {
-        surpriseBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          burstConfetti();
-          const randomMsg = loveMessages[Math.floor(Math.random() * loveMessages.length)];
-          if (msgDisplay) typeMessageWithEffect(randomMsg, msgDisplay);
-          surpriseBtn.style.transform = "scale(0.97)";
-          setTimeout(() => { surpriseBtn.style.transform = ""; }, 120);
-        });
-      }
-    });
+    // Surprise button event
+    const surpriseBtn = document.getElementById('surpriseMsgBtn');
+    if (surpriseBtn) {
+      surpriseBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        burstConfetti();
+        const randomMsg = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+        if (msgDisplay) typeMessage(randomMsg, msgDisplay);
+        surpriseBtn.style.transform = "scale(0.97)";
+        setTimeout(() => { surpriseBtn.style.transform = ""; }, 120);
+      });
+    }
 
     // Floating hearts
-    function createFloatingHeart() {
-      const heart = document.createElement('div');
-      heart.innerHTML = '❤️';
-      heart.style.position = 'fixed';
-      heart.style.left = Math.random() * window.innerWidth + 'px';
-      heart.style.bottom = '-20px';
-      heart.style.fontSize = Math.random() * 20 + 12 + 'px';
-      heart.style.opacity = 0.8;
-      heart.style.pointerEvents = 'none';
-      heart.style.zIndex = 999;
-      heart.style.transition = 'transform 3.2s ease-out, opacity 3s ease-out';
-      heart.style.filter = 'drop-shadow(0 2px 5px rgba(255,80,100,0.3))';
-      document.body.appendChild(heart);
-      requestAnimationFrame(() => {
-        heart.style.transform = 'translateY(-92vh) rotate(15deg)';
-        heart.style.opacity = '0';
-      });
-      setTimeout(() => heart.remove(), 3200);
-    }
     let heartInterval = null;
+    function startFloatingHearts() {
+      if (heartInterval) return;
+      heartInterval = setInterval(() => {
+        if (Math.random() > 0.7) {
+          const heart = document.createElement('div');
+          heart.innerHTML = '❤️';
+          heart.style.position = 'fixed';
+          heart.style.left = Math.random() * window.innerWidth + 'px';
+          heart.style.bottom = '-20px';
+          heart.style.fontSize = Math.random() * 20 + 12 + 'px';
+          heart.style.opacity = 0.8;
+          heart.style.pointerEvents = 'none';
+          heart.style.zIndex = 999;
+          heart.style.transition = 'transform 3.2s ease-out, opacity 3s ease-out';
+          heart.style.filter = 'drop-shadow(0 2px 5px rgba(255,80,100,0.3))';
+          document.body.appendChild(heart);
+          requestAnimationFrame(() => {
+            heart.style.transform = 'translateY(-92vh) rotate(15deg)';
+            heart.style.opacity = '0';
+          });
+          setTimeout(() => heart.remove(), 3200);
+        }
+      }, 2200);
+    }
 
-    // Music and overlay reveal
+    // ----- MUSIC HANDLING (reliable for mobile) -----
     const bgAudio = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicToggleBtn');
     let musicPlaying = false;
+    let audioReady = false;
+    let playAttempted = false;
+
+    // Update button icon and style
     function updateMusicUI(playing) {
       if (!musicBtn) return;
       if (playing) {
@@ -684,86 +730,102 @@
         musicBtn.style.background = "rgba(255,225,215,0.85)";
       }
     }
-    function startMusic() {
-      if (!bgAudio) return;
-      bgAudio.volume = 0.35;
-      bgAudio.play().then(() => {
+
+    // Actual play function with error feedback
+    function tryPlayMusic() {
+      if (!bgAudio) return Promise.reject("no audio element");
+      return bgAudio.play().then(() => {
         musicPlaying = true;
         updateMusicUI(true);
-      }).catch(err => {
-        console.warn("music autoplay failed after click? fallback", err);
+        if (musicBtn) musicBtn.classList.remove('pulse');
+        return true;
+      }).catch((err) => {
+        console.warn("play failed", err);
         musicPlaying = false;
         updateMusicUI(false);
+        // Show friendly toast and pulse the button
+        if (musicBtn) {
+          musicBtn.classList.add('pulse');
+          setTimeout(() => musicBtn.classList.remove('pulse'), 1200);
+        }
+        showToast("🎵 タップで音楽を再生してね 💕", 4000);
+        return false;
       });
     }
-    function pauseMusic() {
-      if (bgAudio && musicPlaying) {
-        bgAudio.pause();
-        musicPlaying = false;
-        updateMusicUI(false);
+
+    // Wait for audio to be ready before playing
+    function playMusicWhenReady() {
+      if (!bgAudio) return;
+      if (audioReady) {
+        tryPlayMusic();
+      } else {
+        bgAudio.addEventListener('canplaythrough', () => {
+          audioReady = true;
+          tryPlayMusic();
+        }, { once: true });
+        // fallback: if loading takes too long, try anyway
+        setTimeout(() => {
+          if (!audioReady) {
+            audioReady = true;
+            tryPlayMusic();
+          }
+        }, 1500);
       }
     }
+
+    // Toggle music on button click
     if (musicBtn && bgAudio) {
       musicBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!musicPlaying) {
-          startMusic();
+          playMusicWhenReady();
         } else {
-          pauseMusic();
+          bgAudio.pause();
+          musicPlaying = false;
+          updateMusicUI(false);
         }
       });
     }
 
-    // REVEAL LOGIC: overlay click
+    // ----- OVERLAY REVEAL -----
     const overlay = document.getElementById('surpriseOverlay');
     if (overlay) {
       overlay.addEventListener('click', () => {
-        // Hide overlay with fade-out
         overlay.classList.add('hide');
-        // Start music immediately
-        startMusic();
-        // Trigger confetti celebration
+        // Start music after loading
+        playMusicWhenReady();
+        // Trigger confetti
         burstConfetti();
-        // Create floating sakura petals
+        // Create sakura petals and floating hearts
         createSakura();
-        // Start floating hearts animation
-        if (!heartInterval) {
-          heartInterval = setInterval(() => { if (Math.random() > 0.7) createFloatingHeart(); }, 2200);
-        }
-        // Show music toggle button
+        startFloatingHearts();
+        // Show music button
         if (musicBtn) musicBtn.classList.add('visible');
-        // Also ensure that any additional small surprises: add a tiny extra confetti after 0.3s
-        setTimeout(() => burstConfetti(), 200);
-        // Remove event listener to avoid duplicate actions (optional)
-        overlay.style.cursor = "default";
+        // Extra confetti burst after a moment
+        setTimeout(() => burstConfetti(), 300);
       });
     } else {
-      // Fallback: if no overlay for any reason, just show music button and create sakura
+      // Fallback in case overlay missing
       if (musicBtn) musicBtn.classList.add('visible');
       createSakura();
-      if (!heartInterval) heartInterval = setInterval(() => { if (Math.random() > 0.7) createFloatingHeart(); }, 2200);
+      startFloatingHearts();
     }
 
-    // Add click confetti on stat items and profile frames (only when revealed)
-    const statItems = document.querySelectorAll('.stat-item');
-    statItems.forEach(item => {
-      item.addEventListener('click', () => {
+    // Click confetti on stat items and profile frames
+    document.querySelectorAll('.stat-item, .profile-frame').forEach(el => {
+      el.addEventListener('click', () => {
         if (typeof canvasConfetti !== 'undefined') {
-          canvasConfetti({ particleCount: 20, spread: 25, origin: { y: 0.8 }, startVelocity: 5 });
-        }
-      });
-    });
-    const profileFrames = document.querySelectorAll('.profile-frame');
-    profileFrames.forEach(frame => {
-      frame.addEventListener('click', () => {
-        if (typeof canvasConfetti !== 'undefined') {
-          canvasConfetti({ particleCount: 30, spread: 35, origin: { y: 0.5 }, startVelocity: 6, colors: ['#ffb48a', '#ff8a7a'] });
+          canvasConfetti({ particleCount: 20, spread: 30, origin: { y: 0.8 }, startVelocity: 6 });
         }
       });
     });
 
-    // Ensure day counter updates if needed (just in case)
-    setInterval(() => updateDayCounter(), 60000);
+    // Preload audio metadata
+    if (bgAudio) {
+      bgAudio.volume = 0.35;
+      bgAudio.load();
+      bgAudio.addEventListener('canplaythrough', () => { audioReady = true; });
+    }
   })();
 </script>
 </body>
