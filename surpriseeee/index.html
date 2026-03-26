@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>3ヶ月記念日 ❤️ 私たちのプロフィール写真 | 記念日スペシャル</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka+One&family=Yusei+Magic&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+  <style>
+    /* ----- CSS CUSTOM PROPERTIES ----- */
+    :root {
+      --primary-romance: #ff8a7a;
+      --primary-soft: #ffb48a;
+      --glass-bg: rgba(255, 248, 245, 0.55);
+      --glass-border: rgba(255, 245, 235, 0.8);
+      --shadow-strong: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 220, 200, 0.3);
+      --transition-smooth: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      --profile-glow: 0 0 0 4px rgba(255, 140, 110, 0.4), 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #ffe8f0 0%, #ffdbdf 100%);
+      font-family: 'Quicksand', 'Yusei Magic', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Sakura */
+    .sakura-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+    .sakura {
+      position: absolute;
+      color: #ffb7c5;
+      font-size: 1.5rem;
+      opacity: 0.7;
+      animation: fall linear forwards;
+      pointer-events: none;
+      will-change: transform;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.9; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Fade-in wrapper */
+    .card-wrapper {
+      max-width: 850px;
+      width: 100%;
+      opacity: 0;
+      transform: scale(0.96);
+      animation: gentlePopIn 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+    }
+    @keyframes gentlePopIn {
+      0% { opacity: 0; transform: scale(0.94) translateY(18px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Glass card */
+    .anniversary-card {
+      width: 100%;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 80px 80px 90px 90px;
+      box-shadow: var(--shadow-strong);
+      padding: 2rem 2rem 2.5rem;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      transition: var(--transition-smooth);
+      border: 1px solid rgba(255, 250, 240, 0.7);
+      animation: floatGlow 2.5s infinite alternate ease-in-out;
+    }
+    @keyframes floatGlow {
+      0% { transform: translateY(0px); box-shadow: 0 25px 45px rgba(255, 105, 180, 0.2); }
+      100% { transform: translateY(-6px); box-shadow: 0 30px 55px rgba(255, 105, 180, 0.3); }
+    }
+
+    .cute-sticker {
+      position: absolute;
+      font-size: 2.4rem;
+      filter: drop-shadow(2px 6px 12px rgba(0,0,0,0.15));
+      transition: transform 0.2s ease;
+    }
+    .sticker-left { top: -20px; left: -20px; transform: rotate(-12deg); }
+    .sticker-right { bottom: -25px; right: -20px; transform: rotate(8deg); }
+    .cute-sticker:hover { transform: scale(1.05) rotate(0deg); }
+
+    h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.9rem;
+      background: linear-gradient(135deg, #ff6f91, #ffaa7a);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .japanese-sub {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #e3647c;
+      background: rgba(255, 240, 235, 0.8);
+      backdrop-filter: blur(4px);
+      display: inline-block;
+      padding: 0.3rem 1.5rem;
+      border-radius: 60px;
+      margin-bottom: 1rem;
+    }
+
+    /* Profile */
+    .profile-area {
+      background: rgba(255, 242, 237, 0.7);
+      backdrop-filter: blur(4px);
+      border-radius: 70px;
+      padding: 1.8rem 1rem;
+      margin: 1rem 0 1rem;
+      box-shadow: 0 15px 25px rgba(255, 140, 110, 0.15);
+      border: 1px solid #ffffffaa;
+    }
+    .profile-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+    }
+    .profile-card {
+      text-align: center;
+      flex: 1;
+      min-width: 150px;
+    }
+    .profile-frame {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto;
+      background: #fff2ec;
+      border-radius: 50%;
+      border: 4px solid #ffcfbc;
+      box-shadow: 0 12px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transition: var(--transition-smooth);
+      cursor: pointer;
+    }
+    .profile-frame:hover {
+      transform: scale(1.02);
+      box-shadow: var(--profile-glow);
+      border-color: #ff9f7c;
+    }
+    .profile-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .profile-name {
+      margin-top: 12px;
+      font-weight: 700;
+      color: #c25a6e;
+      background: rgba(255, 241, 234, 0.9);
+      backdrop-filter: blur(4px);
+      display: inline-block;
+      padding: 5px 20px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+    }
+    .heart-divider {
+      font-size: 3rem;
+      color: #ff8095;
+      text-shadow: 0 2px 8px #ffb7c2;
+      margin: 0 0.5rem;
+      animation: gentlePulse 1.8s infinite;
+    }
+    @keyframes gentlePulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    /* Stats row (with day counter) */
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+      margin: 1rem 0;
+    }
+    .stat-item {
+      background: rgba(255, 236, 225, 0.8);
+      backdrop-filter: blur(4px);
+      border-radius: 70px;
+      padding: 0.6rem 1.6rem;
+      min-width: 110px;
+      transition: var(--transition-smooth);
+      border: 1px solid #ffe2d0;
+    }
+    .stat-item:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 245, 235, 0.95);
+      box-shadow: 0 10px 18px rgba(255, 120, 100, 0.2);
+    }
+    .stat-item i {
+      font-size: 1.9rem;
+      color: #ff8a7a;
+      display: block;
+    }
+    .stat-number {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #f25e7e;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #b55c6e;
+    }
+
+    /* Love letter box */
+    .love-message-box {
+      background: rgba(255, 245, 240, 0.85);
+      backdrop-filter: blur(6px);
+      border-radius: 55px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      border: 2px solid rgba(255, 192, 170, 0.6);
+    }
+    .love-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #e6687e;
+    }
+    .surprise-btn {
+      background: linear-gradient(135deg, #ffb48a, #ff9a6e);
+      border: none;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: bold;
+      padding: 12px 28px;
+      border-radius: 60px;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 0 #b35f3e;
+    }
+    .surprise-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 9px 0 #b35f3e;
+      background: linear-gradient(135deg, #ffc29c, #ffaa7a);
+      gap: 14px;
+    }
+    .surprise-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 3px 0 #b35f3e;
+    }
+    .random-msg {
+      margin-top: 1rem;
+      background: white;
+      border-radius: 48px;
+      padding: 1rem 1.2rem;
+      font-weight: 500;
+      color: #c9516e;
+      border-left: 8px solid #ff9f7c;
+      transition: all 0.2s;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      text-align: left;
+      word-break: break-word;
+      min-height: 90px;
+    }
+    .typing-cursor::after {
+      content: "|";
+      animation: blink 0.9s step-end infinite;
+      margin-left: 2px;
+      font-weight: 400;
+      color: #ff8a7a;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .footer-note {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      color: #e691a3;
+      border-top: 2px solid #ffe2d4;
+      padding-top: 1.2rem;
+    }
+    .music-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255, 225, 215, 0.85);
+      backdrop-filter: blur(8px);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 99;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
+      border: 1px solid #fff2e6;
+      font-size: 1.5rem;
+      color: #e26b7e;
+    }
+    .music-toggle:hover {
+      transform: scale(1.07);
+      background: #ffdad0;
+      color: #c64b62;
+    }
+
+    @media (max-width: 650px) {
+      body { padding: 1rem; }
+      .anniversary-card { padding: 1.5rem 1.2rem 2rem; border-radius: 50px; }
+      h1 { font-size: 2rem; }
+      .profile-frame { width: 120px; height: 120px; }
+      .heart-divider { font-size: 2rem; }
+      .stat-item { padding: 0.3rem 1.2rem; min-width: 85px; }
+      .stat-number { font-size: 1.3rem; }
+      .surprise-btn { padding: 8px 20px; font-size: 0.9rem; }
+      .japanese-sub { font-size: 1.1rem; }
+    }
+    @media (max-width: 480px) {
+      .profile-container { gap: 0.5rem; }
+      .profile-frame { width: 100px; height: 100px; }
+      .profile-name { font-size: 0.7rem; }
+      .stats-row { gap: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="sakura-container" id="sakuraContainer"></div>
+
+<!-- Music control (optional) -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2023/05/16/audio_3f1c5f6c7d.mp3?filename=romantic-piano-184630.mp3" type="audio/mpeg">
+</audio>
+<div class="music-toggle" id="musicToggleBtn">
+  <i class="fas fa-music"></i>
+</div>
+
+<div class="card-wrapper">
+  <div class="anniversary-card">
+    <div class="cute-sticker sticker-left">🐻‍❄️✨🎀</div>
+    <div class="cute-sticker sticker-right">🌸💖🐱</div>
+
+    <h1>❤️ 3 Months Together ❤️</h1>
+    <div class="japanese-sub">三ヶ月記念日おめでとう！</div>
+
+    <!-- PROFILE PICTURE AREA -->
+    <div class="profile-area">
+      <div class="profile-container">
+        <div class="profile-card">
+          <div class="profile-frame">
+            <img id="profileImgLeft" src="https://files.catbox.moe/vgo2gr.png" alt="your profile">
+          </div>
+          <div class="profile-name">
+            <i class="fas fa-heart"></i> あなた <i class="fas fa-heart"></i>
+          </div>
+        </div>
+        <div class="heart-divider">
+          <i class="fas fa-heart heart-float"></i>
+        </div>
+        <div class="profile-card">
+          <div class="profile-frame">
+            <img id="profileImgRight" src="https://files.catbox.moe/6gnk6q.png" alt="boyfriend profile">
+          </div>
+          <div class="profile-name">
+            <i class="fas fa-star"></i> 彼氏くん <i class="fas fa-star"></i>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:0.7rem; margin-top:12px; color:#b9836b;">
+        💕 ふたりの写真をURLで設定してね 💕
+      </p>
+    </div>
+
+    <!-- Stats row with dynamic day counter -->
+    <div class="stats-row">
+      <div class="stat-item"><i class="fas fa-smile-beam"></i><div class="stat-number">✨90✨</div><div class="stat-label">Days of Smiles</div></div>
+      <div class="stat-item"><i class="fas fa-calendar-alt"></i><div class="stat-number" id="daysCounter">--</div><div class="stat-label">Days Together</div></div>
+      <div class="stat-item"><i class="fas fa-heart"></i><div class="stat-number">💕∞💕</div><div class="stat-label">Endless Love</div></div>
+    </div>
+
+    <!-- Love message section with fixed button -->
+    <div class="love-message-box">
+      <div class="love-text"><i class="fas fa-heart heart-float"></i> 大好きだよ、my darling <i class="fas fa-heart heart-float"></i></div>
+      <button class="surprise-btn" id="surpriseMsgBtn"><i class="fas fa-envelope-open-text"></i> ラブレターを開く</button>
+      <div id="randomMessageDisplay" class="random-msg">✨ ボタンを押すと、スペシャルメッセージが届くよ ✨</div>
+    </div>
+
+    <div class="footer-note">
+      <span><i class="fas fa-crown"></i> 君と出会えて、毎日が宝物</span>
+      <span><i class="fas fa-cat"></i> これからもよろしくね！</span>
+      <span><i class="fas fa-moon"></i> 3ヶ月もっと好きになったよ</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ----- SAKURA PETALS -----
+    const sakuraContainer = document.getElementById('sakuraContainer');
+    if (sakuraContainer) {
+      const flowers = ['🌸', '🌼', '🌸', '🌸', '💮', '🌸', '🌺', '🌸'];
+      for (let i = 0; i < 26; i++) {
+        let petal = document.createElement('div');
+        petal.classList.add('sakura');
+        petal.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+        petal.style.fontSize = (Math.floor(Math.random() * 20 + 18)) + 'px';
+        petal.style.left = Math.random() * 100 + '%';
+        petal.style.animationDuration = (Math.random() * 8 + 5) + 's';
+        petal.style.animationDelay = Math.random() * 10 + 's';
+        sakuraContainer.appendChild(petal);
+      }
+    }
+
+    // ----- DAY COUNTER since 27/12/2025 -----
+    function updateDayCounter() {
+      const startDate = new Date(2025, 11, 27); // month is 0-indexed, so 11 = December
+      const today = new Date();
+      startDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+      const diffTime = today - startDate;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      const counterElement = document.getElementById('daysCounter');
+      if (counterElement) {
+        if (diffDays >= 0) {
+          counterElement.textContent = `❤️ ${diffDays} ❤️`;
+        } else {
+          counterElement.textContent = `✨ 0 ✨`;
+        }
+      }
+    }
+    updateDayCounter();
+
+    // ----- ROMANTIC MESSAGES (enhanced) -----
+    const loveMessages = [
+      "💌 君と出会ってから、毎日が特別です。3ヶ月も一緒にいられて幸せ！これからもずっと一緒にいてね。💕",
+      "🌸 大好きだよ、だいすきなあなた！あなたの笑顔が私の宝物です。3ヶ月記念日おめでとう。🌸",
+      "🐱 3ヶ月という時間、あっという間だったね。でもその全部が素敵な思い出。大好き、これからもよろしく！",
+      "🎀 あなたは私の太陽です。いつも明るくしてくれてありがとう。3ヶ月、もっともっと好きになったよ！🎀",
+      "💖 日本語で言うと『あなたのことが大好きです』。これからもよろしくね、彼氏さん！💖",
+      "🍡 3ヶ月間、一緒に笑って、おいしいもの食べて…全てがキラキラしてる。ありがとう、大好き！",
+      "🌟 君は私のヒーロー。これからも二人で素敵な思い出を作ろうね。3ヶ月おめでとう！🌟",
+      "🎉 三ヶ月も経ったなんて信じられない！もっともっと長く一緒にいようね。大好きだよ！🎉",
+      "🐻‍❄️ あなたは私のぬいぐるみみたいに温かくて、一緒にいると安心するよ。大好き、3ヶ月記念日❤️",
+      "✨ 毎日あなたに恋をしています。3ヶ月、本当にありがとう。これからもずっとあなたのそばにいるよ✨",
+      "🌙 夜空の星よりも輝くあなたへ。三ヶ月記念日、これからも手をつないで歩こうね。大好き！",
+      "💎 あなたと一緒にいるときが一番幸せ。3ヶ月、もっともっと深く愛してる。これからもよろしく💎"
+    ];
+
+    // ----- TYPING ANIMATION LOGIC -----
+    let currentTypingInterval = null;
+    let activeTyping = false;
+    const msgDisplay = document.getElementById('randomMessageDisplay');
+
+    function stopTypingAnimation() {
+      if (currentTypingInterval) {
+        clearInterval(currentTypingInterval);
+        currentTypingInterval = null;
+      }
+      activeTyping = false;
+      if (msgDisplay) msgDisplay.classList.remove('typing-cursor');
+    }
+
+    function typeMessageWithEffect(text, targetElement) {
+      stopTypingAnimation();
+      targetElement.innerHTML = "";
+      targetElement.classList.add('typing-cursor');
+      let index = 0;
+      activeTyping = true;
+      currentTypingInterval = setInterval(() => {
+        if (index < text.length) {
+          targetElement.innerHTML += text.charAt(index);
+          index++;
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+          clearInterval(currentTypingInterval);
+          currentTypingInterval = null;
+          targetElement.classList.remove('typing-cursor');
+          activeTyping = false;
+        }
+      }, 45);
+    }
+
+    // ----- CONFETTI BURST (with safety check) -----
+    function burstConfetti() {
+      if (typeof canvasConfetti !== 'undefined') {
+        canvasConfetti({
+          particleCount: 150,
+          spread: 80,
+          origin: { y: 0.6 },
+          startVelocity: 18,
+          colors: ['#ff9a7c', '#ff6f91', '#ffb7c5', '#ffd966', '#ffaa88']
+        });
+        canvasConfetti({
+          particleCount: 60,
+          spread: 50,
+          origin: { y: 0.7, x: 0.3 },
+          startVelocity: 12,
+        });
+        canvasConfetti({
+          particleCount: 60,
+          spread: 50,
+          origin: { y: 0.7, x: 0.7 },
+          startVelocity: 12,
+        });
+        setTimeout(() => {
+          canvasConfetti({ particleCount: 80, spread: 40, origin: { y: 0.5 }, startVelocity: 8 });
+        }, 100);
+      }
+    }
+
+    // ----- FIXED BUTTON: direct event binding using DOMContentLoaded -----
+    document.addEventListener("DOMContentLoaded", function() {
+      const surpriseBtn = document.getElementById('surpriseMsgBtn');
+      if (surpriseBtn) {
+        surpriseBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          burstConfetti();                       // confetti burst
+          const randomMsg = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+          const displayDiv = document.getElementById('randomMessageDisplay');
+          if (displayDiv) {
+            typeMessageWithEffect(randomMsg, displayDiv);
+          }
+          // subtle button feedback
+          surpriseBtn.style.transform = "scale(0.97)";
+          setTimeout(() => { surpriseBtn.style.transform = ""; }, 120);
+        });
+      } else {
+        console.warn("Button with id 'surpriseMsgBtn' not found.");
+      }
+    });
+
+    // ----- FLOATING HEARTS (enhanced)-----
+    function createFloatingHeart() {
+      const heart = document.createElement('div');
+      heart.innerHTML = '❤️';
+      heart.style.position = 'fixed';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.bottom = '-20px';
+      heart.style.fontSize = Math.random() * 20 + 12 + 'px';
+      heart.style.opacity = 0.8;
+      heart.style.pointerEvents = 'none';
+      heart.style.zIndex = 999;
+      heart.style.transition = 'transform 3.2s ease-out, opacity 3s ease-out';
+      heart.style.filter = 'drop-shadow(0 2px 5px rgba(255,80,100,0.3))';
+      document.body.appendChild(heart);
+      requestAnimationFrame(() => {
+        heart.style.transform = 'translateY(-92vh) rotate(15deg)';
+        heart.style.opacity = '0';
+      });
+      setTimeout(() => heart.remove(), 3200);
+    }
+    setInterval(() => { if (Math.random() > 0.7) createFloatingHeart(); }, 2200);
+
+    // ----- BACKGROUND MUSIC (optional) -----
+    const bgAudio = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicToggleBtn');
+    let musicPlaying = false;
+    if (bgAudio) {
+      bgAudio.volume = 0.35;
+      musicBtn.addEventListener('click', () => {
+        if (!musicPlaying) {
+          bgAudio.play().then(() => {
+            musicPlaying = true;
+            musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            musicBtn.style.background = "#ffccc0";
+          }).catch(() => {
+            musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+            alert("ブラウザが自動再生をブロックしました。もう一度押して音楽を再生してください🎵");
+          });
+        } else {
+          bgAudio.pause();
+          musicPlaying = false;
+          musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+          musicBtn.style.background = "rgba(255,225,215,0.85)";
+        }
+      });
+    }
+
+    // Optional: clicking stat items gives mini confetti (fun)
+    const statItems = document.querySelectorAll('.stat-item');
+    statItems.forEach(item => {
+      item.addEventListener('click', () => {
+        if (typeof canvasConfetti !== 'undefined') {
+          canvasConfetti({ particleCount: 20, spread: 25, origin: { y: 0.8 }, startVelocity: 5 });
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>
