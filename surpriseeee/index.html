@@ -37,7 +37,7 @@
       overflow-x: hidden;
     }
 
-    /* Sakura */
+    /* Sakura container (hidden initially, shown after reveal) */
     .sakura-container {
       position: fixed;
       top: 0;
@@ -62,13 +62,14 @@
       100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
     }
 
-    /* Fade-in wrapper */
+    /* Main card wrapper (initially blurred behind overlay) */
     .card-wrapper {
       max-width: 850px;
       width: 100%;
       opacity: 0;
       transform: scale(0.96);
       animation: gentlePopIn 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+      transition: filter 0.5s ease;
     }
     @keyframes gentlePopIn {
       0% { opacity: 0; transform: scale(0.94) translateY(18px); }
@@ -212,6 +213,7 @@
       min-width: 110px;
       transition: var(--transition-smooth);
       border: 1px solid #ffe2d0;
+      cursor: pointer;
     }
     .stat-item:hover {
       transform: translateY(-4px);
@@ -332,6 +334,13 @@
       border: 1px solid #fff2e6;
       font-size: 1.5rem;
       color: #e26b7e;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.2s;
+    }
+    .music-toggle.visible {
+      opacity: 1;
+      pointer-events: auto;
     }
     .music-toggle:hover {
       transform: scale(1.07);
@@ -356,12 +365,118 @@
       .profile-name { font-size: 0.7rem; }
       .stats-row { gap: 0.8rem; }
     }
+
+    /* ----- SURPRISE OVERLAY ----- */
+    .surprise-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 235, 240, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1), visibility 0s linear 0s;
+      font-family: 'Quicksand', 'Yusei Magic', sans-serif;
+    }
+    .surprise-overlay.hide {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.7s ease, visibility 0s linear 0.7s;
+    }
+    .overlay-card {
+      background: rgba(255, 248, 245, 0.85);
+      backdrop-filter: blur(8px);
+      border-radius: 90px;
+      padding: 2.5rem 3rem;
+      text-align: center;
+      box-shadow: 0 30px 50px rgba(255, 100, 120, 0.25), 0 0 0 1px rgba(255, 220, 200, 0.6);
+      transform: scale(0.96);
+      animation: softFloat 2s infinite alternate ease-in-out;
+      max-width: 90vw;
+      width: 450px;
+    }
+    @keyframes softFloat {
+      0% { transform: translateY(0px) scale(0.96); }
+      100% { transform: translateY(-10px) scale(1); }
+    }
+    .overlay-card i {
+      font-size: 5rem;
+      color: #ff6f91;
+      filter: drop-shadow(0 6px 12px rgba(255,80,100,0.3));
+      margin-bottom: 1rem;
+      display: inline-block;
+      animation: heartbeat 1.4s infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    .overlay-card h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.2rem;
+      background: linear-gradient(135deg, #ff6f91, #ffaa7a);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+    }
+    .overlay-card p {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #e6687e;
+      margin-top: 0.5rem;
+      letter-spacing: 2px;
+    }
+    .overlay-card .tiny-heart {
+      font-size: 1.8rem;
+      margin-top: 1.2rem;
+      color: #ff8a7a;
+    }
+    .click-hint {
+      margin-top: 1.8rem;
+      background: rgba(255, 225, 215, 0.9);
+      display: inline-block;
+      padding: 0.6rem 1.6rem;
+      border-radius: 50px;
+      font-weight: 600;
+      color: #c5516b;
+      font-size: 0.9rem;
+      backdrop-filter: blur(4px);
+    }
+    @media (max-width: 550px) {
+      .overlay-card { padding: 1.8rem 1.5rem; width: 85%; }
+      .overlay-card h2 { font-size: 1.6rem; }
+      .overlay-card p { font-size: 1.1rem; }
+      .overlay-card i { font-size: 3.8rem; }
+    }
   </style>
 </head>
 <body>
+
+<!-- SURPRISE OVERLAY (initial visible) -->
+<div class="surprise-overlay" id="surpriseOverlay">
+  <div class="overlay-card">
+    <i class="fas fa-heart"></i>
+    <h2>✨ 特別なサプライズ ✨</h2>
+    <p>click to see the surprise ❤️</p>
+    <div class="tiny-heart">
+      <i class="fas fa-star-of-life"></i> あなたへの想いを込めて <i class="fas fa-star-of-life"></i>
+    </div>
+    <div class="click-hint">
+      <i class="fas fa-hand-pointer"></i> タップして開く
+    </div>
+  </div>
+</div>
+
 <div class="sakura-container" id="sakuraContainer"></div>
 
-<!-- Music control (optional) -->
+<!-- Audio element (will be started after overlay click) -->
 <audio id="bgMusic" loop preload="auto">
   <source src="https://github.com/mintiil/mintiil.github.io/raw/refs/heads/main/surpriseeee/Smyang%20Piano%20-%20rm%20-%20%20tokyo%20lofi%20ver..m4a" type="audio/mpeg">
 </audio>
@@ -429,9 +544,13 @@
 
 <script>
   (function() {
-    // ----- SAKURA PETALS -----
-    const sakuraContainer = document.getElementById('sakuraContainer');
-    if (sakuraContainer) {
+    // ----- SAKURA PETALS (create after reveal for performance, but we can create later) -----
+    let sakuraCreated = false;
+    function createSakura() {
+      if (sakuraCreated) return;
+      sakuraCreated = true;
+      const sakuraContainer = document.getElementById('sakuraContainer');
+      if (!sakuraContainer) return;
       const flowers = ['🌸', '🌼', '🌸', '🌸', '💮', '🌸', '🌺', '🌸'];
       for (let i = 0; i < 26; i++) {
         let petal = document.createElement('div');
@@ -447,7 +566,7 @@
 
     // ----- DAY COUNTER since 27/12/2025 -----
     function updateDayCounter() {
-      const startDate = new Date(2025, 11, 27); // month is 0-indexed, so 11 = December
+      const startDate = new Date(2025, 11, 27);
       const today = new Date();
       startDate.setHours(0, 0, 0, 0);
       today.setHours(0, 0, 0, 0);
@@ -464,7 +583,7 @@
     }
     updateDayCounter();
 
-    // ----- ROMANTIC MESSAGES (enhanced) -----
+    // ----- ROMANTIC MESSAGES -----
     const loveMessages = [
       "💌 君と出会ってから、毎日が特別です。3ヶ月も一緒にいられて幸せ！これからもずっと一緒にいてね。💕",
       "🌸 大好きだよ、だいすきなあなた！あなたの笑顔が私の宝物です。3ヶ月記念日おめでとう。🌸",
@@ -480,26 +599,19 @@
       "💎 あなたと一緒にいるときが一番幸せ。3ヶ月、もっともっと深く愛してる。これからもよろしく💎"
     ];
 
-    // ----- TYPING ANIMATION LOGIC -----
+    // Typing animation logic
     let currentTypingInterval = null;
-    let activeTyping = false;
     const msgDisplay = document.getElementById('randomMessageDisplay');
-
     function stopTypingAnimation() {
-      if (currentTypingInterval) {
-        clearInterval(currentTypingInterval);
-        currentTypingInterval = null;
-      }
-      activeTyping = false;
+      if (currentTypingInterval) clearInterval(currentTypingInterval);
+      currentTypingInterval = null;
       if (msgDisplay) msgDisplay.classList.remove('typing-cursor');
     }
-
     function typeMessageWithEffect(text, targetElement) {
       stopTypingAnimation();
       targetElement.innerHTML = "";
       targetElement.classList.add('typing-cursor');
       let index = 0;
-      activeTyping = true;
       currentTypingInterval = setInterval(() => {
         if (index < text.length) {
           targetElement.innerHTML += text.charAt(index);
@@ -509,61 +621,34 @@
           clearInterval(currentTypingInterval);
           currentTypingInterval = null;
           targetElement.classList.remove('typing-cursor');
-          activeTyping = false;
         }
       }, 45);
     }
-
-    // ----- CONFETTI BURST (with safety check) -----
     function burstConfetti() {
       if (typeof canvasConfetti !== 'undefined') {
-        canvasConfetti({
-          particleCount: 150,
-          spread: 80,
-          origin: { y: 0.6 },
-          startVelocity: 18,
-          colors: ['#ff9a7c', '#ff6f91', '#ffb7c5', '#ffd966', '#ffaa88']
-        });
-        canvasConfetti({
-          particleCount: 60,
-          spread: 50,
-          origin: { y: 0.7, x: 0.3 },
-          startVelocity: 12,
-        });
-        canvasConfetti({
-          particleCount: 60,
-          spread: 50,
-          origin: { y: 0.7, x: 0.7 },
-          startVelocity: 12,
-        });
-        setTimeout(() => {
-          canvasConfetti({ particleCount: 80, spread: 40, origin: { y: 0.5 }, startVelocity: 8 });
-        }, 100);
+        canvasConfetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, startVelocity: 18, colors: ['#ff9a7c', '#ff6f91', '#ffb7c5', '#ffd966'] });
+        canvasConfetti({ particleCount: 60, spread: 50, origin: { y: 0.7, x: 0.3 }, startVelocity: 12 });
+        canvasConfetti({ particleCount: 60, spread: 50, origin: { y: 0.7, x: 0.7 }, startVelocity: 12 });
+        setTimeout(() => canvasConfetti({ particleCount: 80, spread: 40, origin: { y: 0.5 }, startVelocity: 8 }), 100);
       }
     }
 
-    // ----- FIXED BUTTON: direct event binding using DOMContentLoaded -----
-    document.addEventListener("DOMContentLoaded", function() {
+    // Surprise button event (only after reveal)
+    document.addEventListener("DOMContentLoaded", () => {
       const surpriseBtn = document.getElementById('surpriseMsgBtn');
       if (surpriseBtn) {
-        surpriseBtn.addEventListener('click', function(e) {
+        surpriseBtn.addEventListener('click', (e) => {
           e.preventDefault();
-          burstConfetti();                       // confetti burst
+          burstConfetti();
           const randomMsg = loveMessages[Math.floor(Math.random() * loveMessages.length)];
-          const displayDiv = document.getElementById('randomMessageDisplay');
-          if (displayDiv) {
-            typeMessageWithEffect(randomMsg, displayDiv);
-          }
-          // subtle button feedback
+          if (msgDisplay) typeMessageWithEffect(randomMsg, msgDisplay);
           surpriseBtn.style.transform = "scale(0.97)";
           setTimeout(() => { surpriseBtn.style.transform = ""; }, 120);
         });
-      } else {
-        console.warn("Button with id 'surpriseMsgBtn' not found.");
       }
     });
 
-    // ----- FLOATING HEARTS (enhanced)-----
+    // Floating hearts
     function createFloatingHeart() {
       const heart = document.createElement('div');
       heart.innerHTML = '❤️';
@@ -583,34 +668,83 @@
       });
       setTimeout(() => heart.remove(), 3200);
     }
-    setInterval(() => { if (Math.random() > 0.7) createFloatingHeart(); }, 2200);
+    let heartInterval = null;
 
-    // ----- BACKGROUND MUSIC (optional) -----
+    // Music and overlay reveal
     const bgAudio = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicToggleBtn');
     let musicPlaying = false;
-    if (bgAudio) {
+    function updateMusicUI(playing) {
+      if (!musicBtn) return;
+      if (playing) {
+        musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        musicBtn.style.background = "#ffccc0";
+      } else {
+        musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+        musicBtn.style.background = "rgba(255,225,215,0.85)";
+      }
+    }
+    function startMusic() {
+      if (!bgAudio) return;
       bgAudio.volume = 0.35;
-      musicBtn.addEventListener('click', () => {
+      bgAudio.play().then(() => {
+        musicPlaying = true;
+        updateMusicUI(true);
+      }).catch(err => {
+        console.warn("music autoplay failed after click? fallback", err);
+        musicPlaying = false;
+        updateMusicUI(false);
+      });
+    }
+    function pauseMusic() {
+      if (bgAudio && musicPlaying) {
+        bgAudio.pause();
+        musicPlaying = false;
+        updateMusicUI(false);
+      }
+    }
+    if (musicBtn && bgAudio) {
+      musicBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         if (!musicPlaying) {
-          bgAudio.play().then(() => {
-            musicPlaying = true;
-            musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            musicBtn.style.background = "#ffccc0";
-          }).catch(() => {
-            musicBtn.innerHTML = '<i class="fas fa-music"></i>';
-            alert("ブラウザが自動再生をブロックしました。もう一度押して音楽を再生してください🎵");
-          });
+          startMusic();
         } else {
-          bgAudio.pause();
-          musicPlaying = false;
-          musicBtn.innerHTML = '<i class="fas fa-music"></i>';
-          musicBtn.style.background = "rgba(255,225,215,0.85)";
+          pauseMusic();
         }
       });
     }
 
-    // Optional: clicking stat items gives mini confetti (fun)
+    // REVEAL LOGIC: overlay click
+    const overlay = document.getElementById('surpriseOverlay');
+    if (overlay) {
+      overlay.addEventListener('click', () => {
+        // Hide overlay with fade-out
+        overlay.classList.add('hide');
+        // Start music immediately
+        startMusic();
+        // Trigger confetti celebration
+        burstConfetti();
+        // Create floating sakura petals
+        createSakura();
+        // Start floating hearts animation
+        if (!heartInterval) {
+          heartInterval = setInterval(() => { if (Math.random() > 0.7) createFloatingHeart(); }, 2200);
+        }
+        // Show music toggle button
+        if (musicBtn) musicBtn.classList.add('visible');
+        // Also ensure that any additional small surprises: add a tiny extra confetti after 0.3s
+        setTimeout(() => burstConfetti(), 200);
+        // Remove event listener to avoid duplicate actions (optional)
+        overlay.style.cursor = "default";
+      });
+    } else {
+      // Fallback: if no overlay for any reason, just show music button and create sakura
+      if (musicBtn) musicBtn.classList.add('visible');
+      createSakura();
+      if (!heartInterval) heartInterval = setInterval(() => { if (Math.random() > 0.7) createFloatingHeart(); }, 2200);
+    }
+
+    // Add click confetti on stat items and profile frames (only when revealed)
     const statItems = document.querySelectorAll('.stat-item');
     statItems.forEach(item => {
       item.addEventListener('click', () => {
@@ -619,6 +753,17 @@
         }
       });
     });
+    const profileFrames = document.querySelectorAll('.profile-frame');
+    profileFrames.forEach(frame => {
+      frame.addEventListener('click', () => {
+        if (typeof canvasConfetti !== 'undefined') {
+          canvasConfetti({ particleCount: 30, spread: 35, origin: { y: 0.5 }, startVelocity: 6, colors: ['#ffb48a', '#ff8a7a'] });
+        }
+      });
+    });
+
+    // Ensure day counter updates if needed (just in case)
+    setInterval(() => updateDayCounter(), 60000);
   })();
 </script>
 </body>
