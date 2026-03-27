@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>3ヶ月記念日 ❤️ | 記念日スペシャル</title>
+  <title>3ヶ月記念日 ❤️ 私たちのプロフィール写真 | 記念日スペシャル</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka+One&family=Yusei+Magic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
@@ -563,7 +563,6 @@
       const sakuraContainer = document.getElementById('sakuraContainer');
       if (!sakuraContainer) return;
       const flowers = ['🌸', '🌼', '🌸', '🌸', '💮', '🌸', '🌺', '🌸'];
-      // Less petals on mobile to ensure smooth performance
       const sakuraCount = isMobile ? 12 : 26;
       for (let i = 0; i < sakuraCount; i++) {
         let petal = document.createElement('div');
@@ -657,7 +656,6 @@
     let heartInterval = null;
     function startFloatingHearts() {
       if (heartInterval) return;
-      // Reduce floating heart spawn rate on mobile devices
       const heartChance = isMobile ? 0.85 : 0.7;
       const heartIntervalTime = isMobile ? 3200 : 2200;
       
@@ -684,9 +682,11 @@
       }, heartIntervalTime);
     }
 
-    // ----- MUSIC HANDLING (triggered by overlay tap) -----
+    // ----- MUSIC HANDLING & ENTRY OVERLAY -----
     const bgAudio = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicToggleBtn');
+    const overlay = document.getElementById('entryOverlay');
+    const cardWrapper = document.getElementById('cardWrapper');
     let musicPlaying = false;
     let overlayTriggered = false;
 
@@ -701,25 +701,54 @@
       }
     }
 
-    function startMusic() {
-      if (!bgAudio) return;
-      bgAudio.volume = 0.35;
-      bgAudio.play().then(() => {
-        musicPlaying = true;
-        updateMusicUI(true);
-      }).catch((err) => {
-        console.warn("Music play failed, waiting for explicit user play action:", err);
-        musicPlaying = false;
-        updateMusicUI(false);
+    // The tap handler
+    if (overlay && cardWrapper) {
+      overlay.addEventListener('click', (e) => {
+        if (overlayTriggered) return;
+        overlayTriggered = true;
+
+        // 1. START MUSIC IMMEDIATELY on click to satisfy browser security
+        if (bgAudio) {
+          bgAudio.volume = 0.35;
+          let playPromise = bgAudio.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              musicPlaying = true;
+              updateMusicUI(true);
+            }).catch((error) => {
+              console.warn("Autoplay was prevented:", error);
+            });
+          }
+        }
+
+        // 2. Hide and remove overlay smoothly
+        overlay.classList.add('hide');
+        setTimeout(() => {
+          if (overlay.parentNode) {
+            overlay.parentNode.removeChild(overlay);
+          }
+        }, 600);
+
+        // 3. Reveal content and start animations
+        cardWrapper.classList.add('revealed');
+        burstConfetti();
+        createSakura();
+        startFloatingHearts();
+        if (musicBtn) musicBtn.classList.add('visible');
+        setTimeout(() => burstConfetti(), 400);
       });
     }
 
-    // Toggle music when music button is clicked (after overlay)
+    // Toggle music from the floating button
     if (musicBtn && bgAudio) {
       musicBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!musicPlaying) {
-          startMusic();
+          bgAudio.volume = 0.35;
+          bgAudio.play().then(() => {
+            musicPlaying = true;
+            updateMusicUI(true);
+          });
         } else {
           bgAudio.pause();
           musicPlaying = false;
@@ -728,50 +757,7 @@
       });
     }
 
-    // ----- ENTRY OVERLAY TAP (anywhere) -----
-    const overlay = document.getElementById('entryOverlay');
-    const cardWrapper = document.getElementById('cardWrapper');
-
-    if (overlay && cardWrapper) {
-      const handleEntry = (e) => {
-        // Prevent double firing if touchstart gets triggered
-        if (e.type === 'touchstart' && e.cancelable) {
-          e.preventDefault();
-        }
-        if (overlayTriggered) return;
-        overlayTriggered = true;
-
-        // Hide overlay smoothly
-        overlay.classList.add('hide');
-        
-        // Fully remove overlay from DOM after transition to improve mobile performance
-        setTimeout(() => {
-          if (overlay.parentNode) {
-            overlay.parentNode.removeChild(overlay);
-          }
-        }, 600);
-
-        // Reveal main card
-        cardWrapper.classList.add('revealed');
-        // Start music (user gesture)
-        startMusic();
-        // Celebrate with confetti
-        burstConfetti();
-        // Create sakura and floating hearts
-        createSakura();
-        startFloatingHearts();
-        // Show music toggle button
-        if (musicBtn) musicBtn.classList.add('visible');
-        // Extra confetti after a short delay
-        setTimeout(() => burstConfetti(), 400);
-      };
-
-      // Both events bounded, touchstart optimized
-      overlay.addEventListener('click', handleEntry);
-      overlay.addEventListener('touchstart', handleEntry, { passive: false });
-    }
-
-    // Click on stat items / profile frames for mini confetti
+    // Stat item confetti
     document.querySelectorAll('.stat-item, .profile-frame').forEach(el => {
       el.addEventListener('click', () => {
         if (typeof canvasConfetti !== 'undefined') {
@@ -780,8 +766,6 @@
       });
     });
 
-    // Preload audio
-    if (bgAudio) bgAudio.load();
   })();
 </script>
 </body>
