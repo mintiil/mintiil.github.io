@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>3ヶ月記念日 ❤️ 私たちのプロフィール写真 | 記念日スペシャル</title>
+  <title>3ヶ月記念日 ❤️ | 記念日スペシャル</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka+One&family=Yusei+Magic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
@@ -377,7 +377,6 @@
       cursor: pointer;
       font-family: 'Quicksand', 'Yusei Magic', sans-serif;
       touch-action: manipulation;
-      /* Smooth fade in on initial load */
       animation: overlayFadeIn 0.8s ease-out forwards;
       transition: opacity 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1), visibility 0s linear 0s;
     }
@@ -400,6 +399,7 @@
       max-width: 85vw;
       width: 380px;
       animation: softFloat 2s infinite alternate ease-in-out;
+      pointer-events: none;
     }
     @keyframes softFloat {
       0% { transform: translateY(0px); }
@@ -488,8 +488,8 @@
 
 <div class="sakura-container" id="sakuraContainer"></div>
 
-<audio id="bgMusic" loop preload="auto">
-  <source src="https://github.com/mintiil/mintiil.github.io/raw/refs/heads/main/surpriseeee/Smyang%20Piano%20-%20rm%20-%20%20tokyo%20lofi%20ver..m4a" type="audio/mpeg">
+<audio id="bgMusic" preload="auto" playsinline loop>
+  <source src="https://github.com/mintiil/mintiil.github.io/raw/refs/heads/main/surpriseeee/Smyang%20Piano%20-%20rm%20-%20%20tokyo%20lofi%20ver..m4a" type="audio/mp4">
 </audio>
 <div class="music-toggle" id="musicToggleBtn">
   <i class="fas fa-music"></i>
@@ -526,7 +526,7 @@
         </div>
       </div>
       <p style="font-size:0.7rem; margin-top:12px; color:#b9836b;">
-        💕 ふたりの写真をURLで設定してね 💕
+        💕💕
       </p>
     </div>
 
@@ -552,11 +552,35 @@
 
 <script>
   (function() {
-    // Detect mobile for performance tweaking
-    const isMobile = window.innerWidth <= 650;
-
-    // ----- HELPER: create sakura petals -----
+    // ---------- GLOBALS ----------
+    let started = false;          // prevents double entry
+    let musicPlaying = false;
+    let typingInterval = null;
+    let heartInterval = null;
     let sakuraCreated = false;
+    
+    const isMobile = window.innerWidth <= 650;
+    const audio = document.getElementById("bgMusic");
+    const overlay = document.getElementById("entryOverlay");
+    const cardWrapper = document.getElementById("cardWrapper");
+    const musicBtn = document.getElementById("musicToggleBtn");
+    const msgDisplay = document.getElementById("randomMessageDisplay");
+    const surpriseBtn = document.getElementById("surpriseMsgBtn");
+    
+    // Set initial volume
+    if (audio) audio.volume = 0.4;
+    
+    // ---------- HELPER: burst confetti ----------
+    function burstConfetti() {
+      if (typeof canvasConfetti !== 'undefined') {
+        canvasConfetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, startVelocity: 18, colors: ['#ff9a7c', '#ff6f91', '#ffb7c5', '#ffd966'] });
+        canvasConfetti({ particleCount: 60, spread: 50, origin: { y: 0.7, x: 0.3 }, startVelocity: 12 });
+        canvasConfetti({ particleCount: 60, spread: 50, origin: { y: 0.7, x: 0.7 }, startVelocity: 12 });
+        setTimeout(() => canvasConfetti({ particleCount: 80, spread: 40, origin: { y: 0.5 }, startVelocity: 8 }), 100);
+      }
+    }
+    
+    // ---------- SAKURA PETALS ----------
     function createSakura() {
       if (sakuraCreated) return;
       sakuraCreated = true;
@@ -575,90 +599,12 @@
         sakuraContainer.appendChild(petal);
       }
     }
-
-    // ----- DAY COUNTER -----
-    function updateDayCounter() {
-      const startDate = new Date(2025, 11, 27);
-      const today = new Date();
-      startDate.setHours(0, 0, 0, 0);
-      today.setHours(0, 0, 0, 0);
-      const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-      const counter = document.getElementById('daysCounter');
-      if (counter) counter.textContent = diffDays >= 0 ? `❤️ ${diffDays} ❤️` : `✨ 0 ✨`;
-    }
-    updateDayCounter();
-    setInterval(updateDayCounter, 60000);
-
-    // ----- ROMANTIC MESSAGES -----
-    const loveMessages = [
-      "💌 君と出会ってから、毎日が特別です。3ヶ月も一緒にいられて幸せ！これからもずっと一緒にいてね。💕",
-      "🌸 大好きだよ、だいすきなあなた！あなたの笑顔が私の宝物です。3ヶ月記念日おめでとう。🌸",
-      "🐱 3ヶ月という時間、あっという間だったね。でもその全部が素敵な思い出。大好き、これからもよろしく！",
-      "🎀 あなたは私の太陽です。いつも明るくしてくれてありがとう。3ヶ月、もっともっと好きになったよ！🎀",
-      "💖 日本語で言うと『あなたのことが大好きです』。これからもよろしくね、彼氏さん！💖",
-      "🍡 3ヶ月間、一緒に笑って、おいしいもの食べて…全てがキラキラしてる。ありがとう、大好き！",
-      "🌟 君は私のヒーロー。これからも二人で素敵な思い出を作ろうね。3ヶ月おめでとう！🌟",
-      "🎉 三ヶ月も経ったなんて信じられない！もっともっと長く一緒にいようね。大好きだよ！🎉",
-      "🐻‍❄️ あなたは私のぬいぐるみみたいに温かくて、一緒にいると安心するよ。大好き、3ヶ月記念日❤️",
-      "✨ 毎日あなたに恋をしています。3ヶ月、本当にありがとう。これからもずっとあなたのそばにいるよ✨",
-      "🌙 夜空の星よりも輝くあなたへ。三ヶ月記念日、これからも手をつないで歩こうね。大好き！",
-      "💎 あなたと一緒にいるときが一番幸せ。3ヶ月、もっともっと深く愛してる。これからもよろしく💎"
-    ];
-
-    // Typing animation
-    let typingInterval = null;
-    const msgDisplay = document.getElementById('randomMessageDisplay');
-    function stopTyping() {
-      if (typingInterval) clearInterval(typingInterval);
-      if (msgDisplay) msgDisplay.classList.remove('typing-cursor');
-    }
-    function typeMessage(text, target) {
-      stopTyping();
-      target.innerHTML = "";
-      target.classList.add('typing-cursor');
-      let idx = 0;
-      typingInterval = setInterval(() => {
-        if (idx < text.length) {
-          target.innerHTML += text.charAt(idx);
-          idx++;
-          target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        } else {
-          clearInterval(typingInterval);
-          typingInterval = null;
-          target.classList.remove('typing-cursor');
-        }
-      }, 45);
-    }
-
-    function burstConfetti() {
-      if (typeof canvasConfetti !== 'undefined') {
-        canvasConfetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, startVelocity: 18, colors: ['#ff9a7c', '#ff6f91', '#ffb7c5', '#ffd966'] });
-        canvasConfetti({ particleCount: 60, spread: 50, origin: { y: 0.7, x: 0.3 }, startVelocity: 12 });
-        canvasConfetti({ particleCount: 60, spread: 50, origin: { y: 0.7, x: 0.7 }, startVelocity: 12 });
-        setTimeout(() => canvasConfetti({ particleCount: 80, spread: 40, origin: { y: 0.5 }, startVelocity: 8 }), 100);
-      }
-    }
-
-    // Surprise button inside card
-    const surpriseBtn = document.getElementById('surpriseMsgBtn');
-    if (surpriseBtn) {
-      surpriseBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        burstConfetti();
-        const randomMsg = loveMessages[Math.floor(Math.random() * loveMessages.length)];
-        if (msgDisplay) typeMessage(randomMsg, msgDisplay);
-        surpriseBtn.style.transform = "scale(0.97)";
-        setTimeout(() => { surpriseBtn.style.transform = ""; }, 120);
-      });
-    }
-
-    // Floating hearts
-    let heartInterval = null;
+    
+    // ---------- FLOATING HEARTS ----------
     function startFloatingHearts() {
       if (heartInterval) return;
       const heartChance = isMobile ? 0.85 : 0.7;
       const heartIntervalTime = isMobile ? 3200 : 2200;
-      
       heartInterval = setInterval(() => {
         if (Math.random() > heartChance) {
           const heart = document.createElement('div');
@@ -681,15 +627,60 @@
         }
       }, heartIntervalTime);
     }
-
-    // ----- MUSIC HANDLING & ENTRY OVERLAY -----
-    const bgAudio = document.getElementById('bgMusic');
-    const musicBtn = document.getElementById('musicToggleBtn');
-    const overlay = document.getElementById('entryOverlay');
-    const cardWrapper = document.getElementById('cardWrapper');
-    let musicPlaying = false;
-    let overlayTriggered = false;
-
+    
+    // ---------- DAY COUNTER ----------
+    function updateDayCounter() {
+      const startDate = new Date(2025, 11, 27);
+      const today = new Date();
+      startDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+      const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+      const counter = document.getElementById('daysCounter');
+      if (counter) counter.textContent = diffDays >= 0 ? `❤️ ${diffDays} ❤️` : `✨ 0 ✨`;
+    }
+    updateDayCounter();
+    setInterval(updateDayCounter, 60000);
+    
+    // ---------- ROMANTIC MESSAGES & TYPING ----------
+    const loveMessages = [
+      "💌 君と出会ってから、毎日が特別です。3ヶ月も一緒にいられて幸せ！これからもずっと一緒にいてね。💕",
+      "🌸 大好きだよ、だいすきなあなた！あなたの笑顔が私の宝物です。3ヶ月記念日おめでとう。🌸",
+      "🐱 3ヶ月という時間、あっという間だったね。でもその全部が素敵な思い出。大好き、これからもよろしく！",
+      "🎀 あなたは私の太陽です。いつも明るくしてくれてありがとう。3ヶ月、もっともっと好きになったよ！🎀",
+      "💖 日本語で言うと『あなたのことが大好きです』。これからもよろしくね、彼氏さん！💖",
+      "🍡 3ヶ月間、一緒に笑って、おいしいもの食べて…全てがキラキラしてる。ありがとう、大好き！",
+      "🌟 君は私のヒーロー。これからも二人で素敵な思い出を作ろうね。3ヶ月おめでとう！🌟",
+      "🎉 三ヶ月も経ったなんて信じられない！もっともっと長く一緒にいようね。大好きだよ！🎉",
+      "🐻‍❄️ あなたは私のぬいぐるみみたいに温かくて、一緒にいると安心するよ。大好き、3ヶ月記念日❤️",
+      "✨ 毎日あなたに恋をしています。3ヶ月、本当にありがとう。これからもずっとあなたのそばにいるよ✨",
+      "🌙 夜空の星よりも輝くあなたへ。三ヶ月記念日、これからも手をつないで歩こうね。大好き！",
+      "💎 あなたと一緒にいるときが一番幸せ。3ヶ月、もっともっと深く愛してる。これからもよろしく💎"
+    ];
+    
+    function stopTyping() {
+      if (typingInterval) clearInterval(typingInterval);
+      if (msgDisplay) msgDisplay.classList.remove('typing-cursor');
+    }
+    
+    function typeMessage(text, target) {
+      stopTyping();
+      target.innerHTML = "";
+      target.classList.add('typing-cursor');
+      let idx = 0;
+      typingInterval = setInterval(() => {
+        if (idx < text.length) {
+          target.innerHTML += text.charAt(idx);
+          idx++;
+          target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+          clearInterval(typingInterval);
+          typingInterval = null;
+          target.classList.remove('typing-cursor');
+        }
+      }, 45);
+    }
+    
+    // ---------- MUSIC TOGGLE BUTTON ----------
     function updateMusicUI(playing) {
       if (!musicBtn) return;
       if (playing) {
@@ -700,87 +691,110 @@
         musicBtn.style.background = "rgba(255,225,215,0.85)";
       }
     }
-
-    // The entry gesture handler: use one function and attach to multiple input events
-    function handleEntryGesture(e) {
-      // Prevent accidental gestures (like scroll) from triggering; respect first interaction only
-      if (overlayTriggered) return;
-      overlayTriggered = true;
-      try { if (e && e.preventDefault) e.preventDefault(); } catch (err) {}
-
-      // 1. START MUSIC on user gesture (mobile/desktop friendly)
-      if (bgAudio) {
+    
+    // ---------- ENTRY HANDLER (CRITICAL MUSIC FIX) ----------
+    function enterSite() {
+      if (started) return;
+      started = true;
+      
+      // 🔥 IMMEDIATELY PLAY AUDIO (user gesture is active)
+      if (audio) {
         try {
-          bgAudio.volume = 0.35;
-          const p = bgAudio.play();
-          if (p && p.then) {
-            p.then(() => { musicPlaying = true; updateMusicUI(true); }).catch(()=>{
-              // ignore; UI still revealed
+          audio.currentTime = 0;
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              musicPlaying = true;
+              updateMusicUI(true);
+            }).catch((err) => {
+              console.warn("Audio play blocked, but UI still works:", err);
+              musicPlaying = false;
+              updateMusicUI(false);
             });
+          } else {
+            musicPlaying = !audio.paused;
+            updateMusicUI(musicPlaying);
           }
-        } catch (err) {
-          console.warn('Error trying to play audio:', err);
+        } catch(e) {
+          console.warn(e);
         }
       }
-
-      // 2. Hide and remove overlay smoothly
+      
+      // Hide overlay with smooth transition
       if (overlay) {
-        overlay.classList.add('hide');
+        overlay.classList.add("hide");
         setTimeout(() => {
           if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
         }, 600);
       }
-
-      // 3. Reveal content and start animations
-      if (cardWrapper) cardWrapper.classList.add('revealed');
+      
+      // Reveal main card content
+      if (cardWrapper) cardWrapper.classList.add("revealed");
+      
+      // Trigger festive effects
       burstConfetti();
       createSakura();
       startFloatingHearts();
-      if (musicBtn) musicBtn.classList.add('visible');
+      
+      // Show music toggle button
+      if (musicBtn) musicBtn.classList.add("visible");
+      
+      // Extra joy
       setTimeout(() => burstConfetti(), 400);
     }
-
-    // Attach to multiple events to improve reliability on mobile browsers
+    
+    // ----- ATTACH ENTRY EVENT (ONLY ONCE, USING POINTERDOWN FOR MOBILE) -----
     if (overlay) {
-      overlay.addEventListener('click', handleEntryGesture, { passive: false });
-      overlay.addEventListener('pointerdown', handleEntryGesture, { passive: false });
-      overlay.addEventListener('touchstart', handleEntryGesture, { passive: false });
+      overlay.addEventListener("pointerdown", enterSite, { once: true });
+      // fallback for compatibility
+      overlay.addEventListener("touchstart", enterSite, { once: true });
+      overlay.addEventListener("click", enterSite, { once: true });
     }
-
-    // Also attach a one-time document-level listener so "tap anywhere" works even if overlay
-    // is not covering some edge-case (or if user taps outside). This ensures the first user
-    // interaction will attempt to start the music and reveal content.
-    document.addEventListener('pointerdown', function docOnce(e) {
-      if (!overlayTriggered) handleEntryGesture(e);
-    }, { once: true, passive: false });
-
-    // Toggle music from the floating button
-    if (musicBtn && bgAudio) {
-      musicBtn.addEventListener('click', (e) => {
+    
+    // ----- MUSIC TOGGLE BUTTON (manual control) -----
+    if (musicBtn && audio) {
+      musicBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         if (!musicPlaying) {
-          bgAudio.volume = 0.35;
-          bgAudio.play().then(() => {
+          audio.play().then(() => {
             musicPlaying = true;
             updateMusicUI(true);
+          }).catch(() => {
+            musicPlaying = false;
+            updateMusicUI(false);
           });
         } else {
-          bgAudio.pause();
+          audio.pause();
           musicPlaying = false;
           updateMusicUI(false);
         }
       });
     }
-
-    // Stat item confetti
+    
+    // ----- SURPRISE BUTTON & STAT CONFETTI -----
+    if (surpriseBtn) {
+      surpriseBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        burstConfetti();
+        const randomMsg = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+        if (msgDisplay) typeMessage(randomMsg, msgDisplay);
+        surpriseBtn.style.transform = "scale(0.97)";
+        setTimeout(() => { if(surpriseBtn) surpriseBtn.style.transform = ""; }, 120);
+      });
+    }
+    
     document.querySelectorAll('.stat-item, .profile-frame').forEach(el => {
-      el.addEventListener('click', () => {
+      el.addEventListener("click", () => {
         if (typeof canvasConfetti !== 'undefined') {
           canvasConfetti({ particleCount: 20, spread: 30, origin: { y: 0.8 }, startVelocity: 6 });
         }
       });
     });
-
+    
+    // Small extra: ensure audio element is playable (iOS friendly)
+    if (audio) {
+      audio.load();
+    }
   })();
 </script>
 </body>
