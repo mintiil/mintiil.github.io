@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>3ヶ月記念日 ❤️ 私たちのプロフィール写真 | 記念日スペシャル</title>
+  <title>3ヶ月記念日 ❤️ | 記念日スペシャル</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka+One&family=Yusei+Magic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
@@ -263,13 +263,15 @@
       border: none;
       font-family: 'Quicksand', sans-serif;
       font-weight: bold;
-      padding: 12px 24px;
+      padding: 14px 28px;
+      min-height: 48px;
       border-radius: 60px;
       font-size: clamp(0.9rem, 4vw, 1rem);
       color: white;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 12px;
       transition: all 0.2s ease;
       box-shadow: 0 6px 0 #b35f3e;
@@ -373,9 +375,15 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: opacity 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1), visibility 0s linear 0s;
       font-family: 'Quicksand', 'Yusei Magic', sans-serif;
       touch-action: manipulation;
+      /* Smooth fade in on initial load */
+      animation: overlayFadeIn 0.8s ease-out forwards;
+      transition: opacity 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1), visibility 0s linear 0s;
+    }
+    @keyframes overlayFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
     .entry-overlay.hide {
       opacity: 0;
@@ -451,7 +459,6 @@
       .profile-container { gap: 0.8rem; }
       .profile-frame { width: min(120px, 32vw); height: min(120px, 32vw); }
       .stat-item { padding: 0.4rem 1rem; min-width: 80px; }
-      .surprise-btn { padding: 10px 20px; }
       .love-message-box { padding: 1.2rem; }
       .music-toggle { width: 44px; height: 44px; font-size: 1.3rem; bottom: 16px; right: 16px; }
     }
@@ -467,7 +474,6 @@
 </head>
 <body>
 
-<!-- ENTRY OVERLAY (Tap anywhere to enter) -->
 <div class="entry-overlay" id="entryOverlay">
   <div class="overlay-content">
     <i class="fas fa-heart"></i>
@@ -482,7 +488,6 @@
 
 <div class="sakura-container" id="sakuraContainer"></div>
 
-<!-- Audio element (will be started by overlay tap) -->
 <audio id="bgMusic" loop preload="auto">
   <source src="https://github.com/mintiil/mintiil.github.io/raw/refs/heads/main/surpriseeee/Smyang%20Piano%20-%20rm%20-%20%20tokyo%20lofi%20ver..m4a" type="audio/mpeg">
 </audio>
@@ -498,7 +503,6 @@
     <h1>❤️ 3 Months Together ❤️</h1>
     <div class="japanese-sub">三ヶ月記念日おめでとう！</div>
 
-    <!-- PROFILE PICTURE AREA -->
     <div class="profile-area">
       <div class="profile-container">
         <div class="profile-card">
@@ -526,14 +530,12 @@
       </p>
     </div>
 
-    <!-- Stats row with dynamic day counter -->
     <div class="stats-row">
       <div class="stat-item"><i class="fas fa-smile-beam"></i><div class="stat-number">✨90✨</div><div class="stat-label">Days of Smiles</div></div>
       <div class="stat-item"><i class="fas fa-calendar-alt"></i><div class="stat-number" id="daysCounter">--</div><div class="stat-label">Days Together</div></div>
       <div class="stat-item"><i class="fas fa-heart"></i><div class="stat-number">💕∞💕</div><div class="stat-label">Endless Love</div></div>
     </div>
 
-    <!-- Love message section -->
     <div class="love-message-box">
       <div class="love-text"><i class="fas fa-heart heart-float"></i> 大好きだよ、my darling <i class="fas fa-heart heart-float"></i></div>
       <button class="surprise-btn" id="surpriseMsgBtn"><i class="fas fa-envelope-open-text"></i> ラブレターを開く</button>
@@ -550,6 +552,9 @@
 
 <script>
   (function() {
+    // Detect mobile for performance tweaking
+    const isMobile = window.innerWidth <= 650;
+
     // ----- HELPER: create sakura petals -----
     let sakuraCreated = false;
     function createSakura() {
@@ -558,7 +563,9 @@
       const sakuraContainer = document.getElementById('sakuraContainer');
       if (!sakuraContainer) return;
       const flowers = ['🌸', '🌼', '🌸', '🌸', '💮', '🌸', '🌺', '🌸'];
-      for (let i = 0; i < 26; i++) {
+      // Less petals on mobile to ensure smooth performance
+      const sakuraCount = isMobile ? 12 : 26;
+      for (let i = 0; i < sakuraCount; i++) {
         let petal = document.createElement('div');
         petal.classList.add('sakura');
         petal.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
@@ -650,8 +657,12 @@
     let heartInterval = null;
     function startFloatingHearts() {
       if (heartInterval) return;
+      // Reduce floating heart spawn rate on mobile devices
+      const heartChance = isMobile ? 0.85 : 0.7;
+      const heartIntervalTime = isMobile ? 3200 : 2200;
+      
       heartInterval = setInterval(() => {
-        if (Math.random() > 0.7) {
+        if (Math.random() > heartChance) {
           const heart = document.createElement('div');
           heart.innerHTML = '❤️';
           heart.style.position = 'fixed';
@@ -670,14 +681,14 @@
           });
           setTimeout(() => heart.remove(), 3200);
         }
-      }, 2200);
+      }, heartIntervalTime);
     }
 
     // ----- MUSIC HANDLING (triggered by overlay tap) -----
     const bgAudio = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicToggleBtn');
     let musicPlaying = false;
-    let overlayTriggered = false;  // ensure only once
+    let overlayTriggered = false;
 
     function updateMusicUI(playing) {
       if (!musicBtn) return;
@@ -697,25 +708,9 @@
         musicPlaying = true;
         updateMusicUI(true);
       }).catch((err) => {
-        console.warn("Music play failed:", err);
+        console.warn("Music play failed, waiting for explicit user play action:", err);
         musicPlaying = false;
         updateMusicUI(false);
-        // Gentle toast feedback (non-intrusive)
-        const toast = document.createElement('div');
-        toast.textContent = "🎵 音楽を再生できませんでした。もう一度タップしてください 🎵";
-        toast.style.position = "fixed";
-        toast.style.bottom = "90px";
-        toast.style.right = "20px";
-        toast.style.background = "rgba(0,0,0,0.7)";
-        toast.style.color = "#fff0e6";
-        toast.style.padding = "8px 16px";
-        toast.style.borderRadius = "40px";
-        toast.style.fontSize = "0.8rem";
-        toast.style.zIndex = "100";
-        toast.style.pointerEvents = "none";
-        toast.style.backdropFilter = "blur(4px)";
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
       });
     }
 
@@ -738,13 +733,24 @@
     const cardWrapper = document.getElementById('cardWrapper');
 
     if (overlay && cardWrapper) {
-      // Handle both click and touchstart for mobile
       const handleEntry = (e) => {
+        // Prevent double firing if touchstart gets triggered
+        if (e.type === 'touchstart' && e.cancelable) {
+          e.preventDefault();
+        }
         if (overlayTriggered) return;
         overlayTriggered = true;
 
-        // Hide overlay
+        // Hide overlay smoothly
         overlay.classList.add('hide');
+        
+        // Fully remove overlay from DOM after transition to improve mobile performance
+        setTimeout(() => {
+          if (overlay.parentNode) {
+            overlay.parentNode.removeChild(overlay);
+          }
+        }, 600);
+
         // Reveal main card
         cardWrapper.classList.add('revealed');
         // Start music (user gesture)
@@ -760,11 +766,12 @@
         setTimeout(() => burstConfetti(), 400);
       };
 
+      // Both events bounded, touchstart optimized
       overlay.addEventListener('click', handleEntry);
       overlay.addEventListener('touchstart', handleEntry, { passive: false });
     }
 
-    // Click on stat items / profile frames for mini confetti (already there)
+    // Click on stat items / profile frames for mini confetti
     document.querySelectorAll('.stat-item, .profile-frame').forEach(el => {
       el.addEventListener('click', () => {
         if (typeof canvasConfetti !== 'undefined') {
