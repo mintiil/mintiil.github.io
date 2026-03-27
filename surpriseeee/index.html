@@ -701,43 +701,58 @@
       }
     }
 
-    // The tap handler
-    if (overlay && cardWrapper) {
-      overlay.addEventListener('click', (e) => {
-        if (overlayTriggered) return;
-        overlayTriggered = true;
+    // The entry gesture handler: use one function and attach to multiple input events
+    function handleEntryGesture(e) {
+      // Prevent accidental gestures (like scroll) from triggering; respect first interaction only
+      if (overlayTriggered) return;
+      overlayTriggered = true;
+      try { if (e && e.preventDefault) e.preventDefault(); } catch (err) {}
 
-        // 1. START MUSIC IMMEDIATELY on click to satisfy browser security
-        if (bgAudio) {
+      // 1. START MUSIC on user gesture (mobile/desktop friendly)
+      if (bgAudio) {
+        try {
           bgAudio.volume = 0.35;
-          let playPromise = bgAudio.play();
-          if (playPromise !== undefined) {
-            playPromise.then(() => {
-              musicPlaying = true;
-              updateMusicUI(true);
-            }).catch((error) => {
-              console.warn("Autoplay was prevented:", error);
+          const p = bgAudio.play();
+          if (p && p.then) {
+            p.then(() => { musicPlaying = true; updateMusicUI(true); }).catch(()=>{
+              // ignore; UI still revealed
             });
           }
+        } catch (err) {
+          console.warn('Error trying to play audio:', err);
         }
+      }
 
-        // 2. Hide and remove overlay smoothly
+      // 2. Hide and remove overlay smoothly
+      if (overlay) {
         overlay.classList.add('hide');
         setTimeout(() => {
-          if (overlay.parentNode) {
-            overlay.parentNode.removeChild(overlay);
-          }
+          if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
         }, 600);
+      }
 
-        // 3. Reveal content and start animations
-        cardWrapper.classList.add('revealed');
-        burstConfetti();
-        createSakura();
-        startFloatingHearts();
-        if (musicBtn) musicBtn.classList.add('visible');
-        setTimeout(() => burstConfetti(), 400);
-      });
+      // 3. Reveal content and start animations
+      if (cardWrapper) cardWrapper.classList.add('revealed');
+      burstConfetti();
+      createSakura();
+      startFloatingHearts();
+      if (musicBtn) musicBtn.classList.add('visible');
+      setTimeout(() => burstConfetti(), 400);
     }
+
+    // Attach to multiple events to improve reliability on mobile browsers
+    if (overlay) {
+      overlay.addEventListener('click', handleEntryGesture, { passive: false });
+      overlay.addEventListener('pointerdown', handleEntryGesture, { passive: false });
+      overlay.addEventListener('touchstart', handleEntryGesture, { passive: false });
+    }
+
+    // Also attach a one-time document-level listener so "tap anywhere" works even if overlay
+    // is not covering some edge-case (or if user taps outside). This ensures the first user
+    // interaction will attempt to start the music and reveal content.
+    document.addEventListener('pointerdown', function docOnce(e) {
+      if (!overlayTriggered) handleEntryGesture(e);
+    }, { once: true, passive: false });
 
     // Toggle music from the floating button
     if (musicBtn && bgAudio) {
