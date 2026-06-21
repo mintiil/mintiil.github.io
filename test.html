@@ -824,92 +824,6 @@
         }
 
         /* ============================================================
-               VIRTUAL TOUR
-            ============================================================ */
-        .vt-section {
-            background: var(--primary-dark);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .vt-section::before {
-            content: '';
-            position: absolute;
-            top: -80px;
-            right: -120px;
-            width: 400px;
-            height: 400px;
-            border: 1px solid rgba(196, 164, 74, 0.12);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .vt-section::after {
-            content: '';
-            position: absolute;
-            bottom: -60px;
-            left: -80px;
-            width: 300px;
-            height: 300px;
-            border: 1px solid rgba(196, 164, 74, 0.08);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .vt-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .vt-info h2 {
-            font-size: 2rem;
-            margin-bottom: 16px;
-        }
-
-        .vt-info p {
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 24px;
-            line-height: 1.7;
-        }
-
-        .vt-rooms {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
-
-        .vt-room {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(196, 164, 74, 0.25);
-            border-radius: var(--radius);
-            padding: 20px 16px;
-            cursor: pointer;
-            transition: all var(--transition);
-            text-align: center;
-            color: var(--white);
-        }
-
-        .vt-room:hover {
-            background: rgba(196, 164, 74, 0.15);
-            border-color: var(--accent-gold);
-            transform: translateY(-4px);
-        }
-
-        .vt-room-icon {
-            font-size: 2.2rem;
-            margin-bottom: 8px;
-        }
-
-        .vt-room h4 {
-            font-size: 0.95rem;
-        }
-
-        /* ============================================================
                NEWS
             ============================================================ */
         .news-grid {
@@ -1356,12 +1270,6 @@
             .hamburger {
                 display: flex;
             }
-            .vt-grid {
-                grid-template-columns: 1fr;
-            }
-            .vt-rooms {
-                grid-template-columns: 1fr 1fr;
-            }
             .masonry-grid {
                 columns: 2 240px;
             }
@@ -1406,10 +1314,6 @@
                 grid-column: span 1;
             }
 
-            .vt-rooms {
-                grid-template-columns: 1fr 1fr;
-            }
-
             .exhibition-grid {
                 grid-template-columns: 1fr;
             }
@@ -1435,9 +1339,6 @@
         }
 
         @media (max-width: 480px) {
-            .vt-rooms {
-                grid-template-columns: 1fr;
-            }
             .hero h1 {
                 font-size: 2rem;
             }
@@ -1484,7 +1385,6 @@
                 <li><a href="#home" class="active" data-vi="Trang chủ" data-en="Home">Trang chủ</a></li>
                 <li><a href="#exhibitions" data-vi="Khu trưng bày" data-en="Exhibitions">Khu trưng bày</a></li>
                 <li><a href="#artifacts" data-vi="Hiện vật" data-en="Artifacts" onclick="event.preventDefault();navigateTo('artifacts')">Hiện vật</a></li>
-                <li><a href="#virtual-tour" data-vi="Tham quan ảo" data-en="Virtual Tour">Tham quan ảo</a></li>
                 <li><a href="#news" data-vi="Tin tức" data-en="News">Tin tức</a></li>
                 <li><a href="#booking" data-vi="Đặt lịch" data-en="Booking">Đặt lịch</a></li>
             </ul>
@@ -1508,7 +1408,6 @@
         <a href="#home" onclick="navigateTo('home');closeMobileMenu()" data-vi="Trang chủ" data-en="Home">Trang chủ</a>
         <a href="#exhibitions" onclick="closeMobileMenu()" data-vi="Khu trưng bày" data-en="Exhibitions">Khu trưng bày</a>
         <a href="#" onclick="navigateTo('artifacts');closeMobileMenu()" data-vi="Hiện vật" data-en="Artifacts">Hiện vật</a>
-        <a href="#virtual-tour" onclick="closeMobileMenu()" data-vi="Tham quan ảo" data-en="Virtual Tour">Tham quan ảo</a>
         <a href="#news" onclick="closeMobileMenu()" data-vi="Tin tức" data-en="News">Tin tức</a>
         <a href="#booking" onclick="closeMobileMenu()" data-vi="Đặt lịch tham quan" data-en="Book a Visit">Đặt lịch tham quan</a>
     </div>
@@ -1535,9 +1434,6 @@
                 <div class="hero-buttons">
                     <a href="#exhibitions" class="btn btn-primary" data-vi="Khám phá bảo tàng" data-en="Explore Museum">
                         Khám phá bảo tàng
-                    </a>
-                    <a href="#virtual-tour" class="btn btn-outline" data-vi="Tham quan ảo 360°" data-en="360° Virtual Tour">
-                        Tham quan ảo 360°
                     </a>
                 </div>
             </div>
@@ -1634,41 +1530,6 @@
             </div>
         </section>
 
-        <!-- ===== VIRTUAL TOUR 360 ===== -->
-        <section class="section vt-section" id="virtual-tour">
-            <div class="container">
-                <div class="vt-grid">
-                    <div class="vt-info">
-                        <span class="section-label" style="color:var(--accent-gold-light);" data-vi="Trải nghiệm số" data-en="Digital Experience">Trải nghiệm số</span>
-                        <h2 data-vi="Tham quan ảo 360°" data-en="360° Virtual Tour">Tham quan ảo 360°</h2>
-                        <div class="section-divider" style="margin:16px 0;"></div>
-                        <p data-vi="Đi từng phòng bằng điện thoại hoặc máy tính." data-en="Go through every room by phone or computer.">
-                            Đi từng phòng bằng điện thoại hoặc máy tính.
-                        </p>
-                        <button class="btn btn-gold" onclick="startVirtualTour()" data-vi="▶ Bắt đầu tham quan" data-en="▶ Start Tour">▶ Bắt đầu tham quan</button>
-                    </div>
-                    <div class="vt-rooms">
-                        <div class="vt-room" onclick="startVirtualTour('main-hall')">
-                            <div class="vt-room-icon">🏛️</div>
-                            <h4 data-vi="Sảnh chính" data-en="Main Hall">Sảnh chính</h4>
-                        </div>
-                        <div class="vt-room" onclick="startVirtualTour('french-war')">
-                            <div class="vt-room-icon">⚔️</div>
-                            <h4 data-vi="Kháng chiến chống Pháp" data-en="French Resistance">Kháng chiến chống Pháp</h4>
-                        </div>
-                        <div class="vt-room" onclick="startVirtualTour('american-war')">
-                            <div class="vt-room-icon">🛡️</div>
-                            <h4 data-vi="Kháng chiến chống Mỹ" data-en="American War">Kháng chiến chống Mỹ</h4>
-                        </div>
-                        <div class="vt-room" onclick="startVirtualTour('outdoor')">
-                            <div class="vt-room-icon">🚁</div>
-                            <h4 data-vi="Trưng bày ngoài trời" data-en="Outdoor Exhibit">Trưng bày ngoài trời</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- ===== NEWS ===== -->
         <section class="section" id="news">
             <div class="container">
@@ -1757,10 +1618,9 @@
                     </div>
                     <div class="footer-col">
                         <h4 data-vi="Liên kết nhanh" data-en="Quick Links">Liên kết nhanh</h4>
-                        <a href="#home" data-vi="Trang chủ" data-en="Home">Trang chủ</a>
-                        <a href="#exhibitions" data-vi="Khu trưng bày" data-en="Exhibitions">Khu trưng bày</a>
-                        <a href="#virtual-tour" data-vi="Tham quan ảo" data-en="Virtual Tour">Tham quan ảo</a>
-                        <a href="#booking" data-vi="Đặt lịch" data-en="Booking">Đặt lịch</a>
+                        <a href="#home" onclick="event.preventDefault();goToSection('home')" data-vi="Trang chủ" data-en="Home">Trang chủ</a>
+                        <a href="#exhibitions" onclick="event.preventDefault();goToSection('exhibitions')" data-vi="Khu trưng bày" data-en="Exhibitions">Khu trưng bày</a>
+                        <a href="#booking" onclick="event.preventDefault();goToSection('booking')" data-vi="Đặt lịch" data-en="Booking">Đặt lịch</a>
                     </div>
                     <div class="footer-col">
                         <h4 data-vi="Giờ mở cửa" data-en="Opening Hours">Giờ mở cửa</h4>
@@ -2302,19 +2162,6 @@
 
         /**
          * ============================================================
-         * VIRTUAL TOUR
-         * ============================================================
-         */
-        function startVirtualTour(room) {
-            var msg = room ?
-                'Đang mở tham quan ảo 360° – Khu vực: ' + room :
-                'Đang mở tham quan ảo 360° toàn bảo tàng';
-            alert(msg + '\n(Tích hợp thực tế: nhúng iframe Pano2VR / Matterport)');
-            // FUTURE: Replace alert with actual 360° panorama embed
-        }
-
-        /**
-         * ============================================================
          * BOOKING
          * ============================================================
          */
@@ -2327,6 +2174,18 @@
                 document.getElementById('bookingSuccess').style.display = 'none';
                 document.getElementById('bookingForm').reset();
             }, 5000);
+        }
+
+        /**
+         * ============================================================
+         * FOOTER SMOOTH SCROLL
+         * ============================================================
+         */
+        function goToSection(id) {
+            const section = document.getElementById(id);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         /**
