@@ -10,25 +10,32 @@
 
     <style>
         /* ============================================================
-               ROOT VARIABLES & RESET
-            ============================================================ */
+           ROOT VARIABLES – VIETNAMESE RED GOVERNMENT THEME
+           ============================================================ */
         :root {
-            --primary-dark: #0f2442;
-            --primary: #1b477f;
-            --primary-light: #3964a8;
-            --accent-gold: #c49b40;
-            --accent-gold-light: #d4b45f;
-            --beige-bg: #eef1f4;
+            --primary-dark: #7a0f1a;
+            /* Deep Vietnamese red */
+            --primary: #b71c1c;
+            /* Bright red */
+            --primary-light: #d32f2f;
+            /* Lighter red */
+            --primary-gradient: #8b0000;
+            /* Darker red for gradients */
+            --accent-gold: #c9a84c;
+            /* Official gold */
+            --accent-gold-light: #dbb95c;
+            --beige-bg: #f5f0e8;
+            /* Warm government beige */
             --white: #ffffff;
-            --off-white: #f7f8fa;
-            --text-dark: #172133;
-            --text-medium: #4d5a72;
-            --text-light: #6a758c;
-            --red-accent: #9a1f1f;
-            --border-subtle: rgba(23, 33, 51, 0.08);
-            --shadow-sm: 0 2px 8px rgba(23, 33, 51, 0.06);
-            --shadow-md: 0 6px 18px rgba(23, 33, 51, 0.12);
-            --shadow-lg: 0 12px 30px rgba(23, 33, 51, 0.18);
+            --off-white: #faf8f5;
+            --text-dark: #1a1410;
+            --text-medium: #4a3f38;
+            --text-light: #7a6b60;
+            --red-accent: #b71c1c;
+            --border-subtle: rgba(120, 30, 30, 0.12);
+            --shadow-sm: 0 2px 8px rgba(60, 20, 20, 0.08);
+            --shadow-md: 0 6px 18px rgba(60, 20, 20, 0.15);
+            --shadow-lg: 0 12px 30px rgba(60, 20, 20, 0.22);
             --radius-sm: 8px;
             --radius: 12px;
             --radius-lg: 20px;
@@ -79,8 +86,8 @@
         }
 
         /* ============================================================
-               HEADER
-            ============================================================ */
+           HEADER
+           ============================================================ */
         .header {
             position: fixed;
             top: 0;
@@ -88,14 +95,14 @@
             right: 0;
             z-index: 1000;
             height: var(--header-height);
-            background: rgba(255, 255, 255, 0.98);
-            border-bottom: 1px solid rgba(23, 33, 51, 0.08);
+            background: rgba(255, 255, 255, 0.97);
+            border-bottom: 2px solid var(--primary);
             transition: all var(--transition);
         }
 
         .header.scrolled {
             background: rgba(255, 255, 255, 1);
-            box-shadow: 0 4px 24px rgba(23, 33, 51, 0.08);
+            box-shadow: 0 4px 24px rgba(60, 20, 20, 0.1);
         }
 
         .header-inner {
@@ -116,15 +123,16 @@
         .logo-emblem {
             width: 44px;
             height: 44px;
-            background: var(--accent-gold-light);
+            background: var(--primary);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
-            color: var(--primary-dark);
+            color: var(--accent-gold);
             font-weight: 900;
             flex-shrink: 0;
+            border: 2px solid var(--accent-gold);
         }
 
         .logo-text-block {
@@ -134,7 +142,7 @@
         }
 
         .logo-main {
-            color: var(--text-dark);
+            color: var(--primary-dark);
             font-family: var(--font-heading);
             font-weight: 700;
             font-size: 1rem;
@@ -170,8 +178,8 @@
 
         .nav-desktop a:hover,
         .nav-desktop a.active {
-            color: var(--primary);
-            background: rgba(27, 71, 127, 0.08);
+            color: var(--white);
+            background: var(--primary);
         }
 
         /* Header actions */
@@ -183,14 +191,18 @@
 
         .lang-switch {
             display: flex;
-            background: rgba(27, 71, 127, 0.08);
+            background: rgba(183, 28, 28, 0.10);
             border-radius: 22px;
             padding: 3px;
             gap: 2px;
+            border: 1px solid rgba(183, 28, 28, 0.15);
         }
 
         .lang-btn {
-            padding: 6px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 10px;
             border-radius: 20px;
             border: none;
             background: transparent;
@@ -200,11 +212,25 @@
             font-size: 0.8rem;
             transition: all var(--transition);
             font-family: var(--font-body);
+            gap: 4px;
+            min-width: 36px;
+        }
+
+        .lang-btn svg {
+            width: 20px;
+            height: 14px;
+            border-radius: 2px;
+            display: block;
+            flex-shrink: 0;
         }
 
         .lang-btn.active {
             background: var(--primary);
             color: var(--white);
+        }
+
+        .lang-btn.active svg {
+            filter: brightness(1.1);
         }
 
         /* Hamburger */
@@ -275,8 +301,8 @@
         }
 
         /* ============================================================
-               BUTTONS
-            ============================================================ */
+           BUTTONS
+           ============================================================ */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -297,23 +323,23 @@
         .btn-primary {
             background: var(--primary);
             color: var(--white);
-            box-shadow: 0 8px 20px rgba(27, 71, 127, 0.18);
+            box-shadow: 0 8px 20px rgba(183, 28, 28, 0.25);
         }
         .btn-primary:hover {
-            background: var(--primary-light);
+            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(27, 71, 127, 0.25);
+            box-shadow: 0 12px 28px rgba(183, 28, 28, 0.35);
         }
 
         .btn-gold {
             background: var(--accent-gold);
             color: var(--primary-dark);
-            box-shadow: 0 8px 20px rgba(196, 155, 64, 0.2);
+            box-shadow: 0 8px 20px rgba(201, 168, 76, 0.25);
         }
         .btn-gold:hover {
             background: var(--accent-gold-light);
             transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(196, 155, 64, 0.3);
+            box-shadow: 0 12px 28px rgba(201, 168, 76, 0.35);
         }
 
         .btn-outline {
@@ -339,8 +365,8 @@
         }
 
         /* ============================================================
-               SECTIONS
-            ============================================================ */
+           SECTIONS
+           ============================================================ */
         .section {
             padding: 90px 0;
         }
@@ -382,8 +408,8 @@
         }
 
         /* ============================================================
-               HERO
-            ============================================================ */
+           HERO
+           ============================================================ */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -391,18 +417,16 @@
             position: relative;
             padding-top: var(--header-height);
             overflow: hidden;
-            /* Enhanced background with subtle pattern and gradient overlay */
             background:
                 linear-gradient(160deg,
-                    rgba(15, 36, 66, 0.92) 0%,
-                    rgba(27, 71, 127, 0.86) 40%,
-                    rgba(15, 36, 66, 0.96) 100%),
-                radial-gradient(ellipse at 70% 20%, rgba(196, 155, 64, 0.12) 0%, transparent 60%),
-                radial-gradient(ellipse at 30% 80%, rgba(196, 155, 64, 0.08) 0%, transparent 50%),
-                url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"%3E%3Crect width="1200" height="800" fill="%23152434"/%3E%3Ccircle cx="260" cy="620" r="120" fill="none" stroke="%23c49b40" stroke-width="6" opacity="0.08"/%3E%3Ccircle cx="950" cy="180" r="160" fill="none" stroke="%23c49b40" stroke-width="6" opacity="0.06"/%3E%3Cpath d="M0 680 C350 520 850 600 1200 520" stroke="%23ffffff" stroke-width="5" opacity="0.03"/%3E%3C/svg%3E') center/cover no-repeat;
+                    rgba(120, 15, 26, 0.95) 0%,
+                    rgba(183, 28, 28, 0.90) 40%,
+                    rgba(80, 10, 18, 0.97) 100%),
+                radial-gradient(ellipse at 70% 20%, rgba(201, 168, 76, 0.10) 0%, transparent 60%),
+                radial-gradient(ellipse at 30% 80%, rgba(201, 168, 76, 0.06) 0%, transparent 50%),
+                url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"%3E%3Crect width="1200" height="800" fill="%238b0000"/%3E%3Ccircle cx="260" cy="620" r="120" fill="none" stroke="%23c9a84c" stroke-width="6" opacity="0.08"/%3E%3Ccircle cx="950" cy="180" r="160" fill="none" stroke="%23c9a84c" stroke-width="6" opacity="0.06"/%3E%3Cpath d="M0 680 C350 520 850 600 1200 520" stroke="%23ffffff" stroke-width="5" opacity="0.03"/%3E%3C/svg%3E') center/cover no-repeat;
         }
 
-        /* Subtle animated glow orbs */
         .hero::before {
             content: '';
             position: absolute;
@@ -410,7 +434,7 @@
             right: -5%;
             width: 500px;
             height: 500px;
-            background: radial-gradient(circle, rgba(196, 155, 64, 0.06) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
             animation: heroGlow 12s ease-in-out infinite alternate;
@@ -423,7 +447,7 @@
             left: -5%;
             width: 400px;
             height: 400px;
-            background: radial-gradient(circle, rgba(196, 155, 64, 0.05) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.04) 0%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
             animation: heroGlow 14s ease-in-out infinite alternate-reverse;
@@ -449,9 +473,9 @@
 
         .hero-badge {
             display: inline-block;
-            background: rgba(27, 71, 127, 0.15);
+            background: rgba(255, 255, 255, 0.10);
             backdrop-filter: blur(4px);
-            border: 1px solid rgba(196, 155, 64, 0.3);
+            border: 1px solid rgba(201, 168, 76, 0.35);
             color: var(--accent-gold-light);
             padding: 8px 20px;
             border-radius: 14px;
@@ -475,7 +499,7 @@
 
         .hero-subtitle {
             font-size: 1.15rem;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.92);
             margin-bottom: 36px;
             max-width: 560px;
             line-height: 1.7;
@@ -505,12 +529,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(196, 155, 64, 0.2);
+            border: 1px solid rgba(201, 168, 76, 0.25);
             transition: all var(--transition);
         }
 
         .hero-scroll:hover {
-            background: rgba(196, 155, 64, 0.15);
+            background: rgba(201, 168, 76, 0.15);
             border-color: var(--accent-gold);
         }
 
@@ -527,8 +551,8 @@
         }
 
         /* ============================================================
-               QUICK INTRO
-            ============================================================ */
+           QUICK INTRO
+           ============================================================ */
         .quick-intro {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -538,17 +562,18 @@
 
         .intro-card {
             background: var(--white);
-            border: 1px solid rgba(23, 33, 51, 0.08);
+            border: 1px solid rgba(120, 15, 26, 0.10);
             border-radius: var(--radius);
             padding: 28px;
             box-shadow: var(--shadow-sm);
             transition: all var(--transition);
+            border-top: 3px solid var(--primary);
         }
 
         .intro-card:hover {
             box-shadow: var(--shadow-md);
             transform: translateY(-4px);
-            border-color: var(--accent-gold-light);
+            border-top-color: var(--accent-gold);
         }
 
         .intro-icon {
@@ -557,7 +582,7 @@
             justify-content: center;
             width: 48px;
             height: 48px;
-            background: rgba(27, 71, 127, 0.08);
+            background: rgba(183, 28, 28, 0.08);
             color: var(--primary);
             border-radius: 14px;
             margin-bottom: 16px;
@@ -577,8 +602,8 @@
         }
 
         /* ============================================================
-               STATS STRIP
-            ============================================================ */
+           STATS STRIP
+           ============================================================ */
         .stats-strip {
             background: var(--white);
             border-radius: var(--radius-lg);
@@ -591,7 +616,8 @@
             gap: 30px;
             flex-wrap: wrap;
             justify-content: space-around;
-            border: 1px solid rgba(23, 33, 51, 0.08);
+            border: 1px solid rgba(120, 15, 26, 0.10);
+            border-bottom: 4px solid var(--primary);
         }
 
         .stat-item {
@@ -620,8 +646,8 @@
         }
 
         /* ============================================================
-               EXHIBITION CARDS
-            ============================================================ */
+           EXHIBITION CARDS
+           ============================================================ */
         .exhibition-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
@@ -633,7 +659,7 @@
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(23, 33, 51, 0.08);
+            border: 1px solid rgba(120, 15, 26, 0.08);
             transition: all 0.35s ease;
             cursor: pointer;
             position: relative;
@@ -657,7 +683,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(transparent 55%, rgba(27, 71, 127, 0.75));
+            background: linear-gradient(transparent 55%, rgba(120, 15, 26, 0.80));
         }
 
         .exh-card-badge {
@@ -707,8 +733,8 @@
         }
 
         /* ============================================================
-               ARTIFACT CAROUSEL
-            ============================================================ */
+           ARTIFACT CAROUSEL
+           ============================================================ */
         .artifact-swiper {
             padding: 20px 0 50px;
         }
@@ -718,7 +744,7 @@
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-subtle);
+            border: 1px solid rgba(120, 15, 26, 0.08);
             transition: all var(--transition);
             cursor: pointer;
         }
@@ -788,9 +814,9 @@
             font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
-            border: 1px solid var(--border-subtle);
+            border: 1px solid rgba(120, 15, 26, 0.12);
             background: var(--beige-bg);
-            color: var(--primary-dark);
+            color: var(--text-dark);
             transition: all var(--transition);
             display: inline-flex;
             align-items: center;
@@ -799,9 +825,9 @@
         }
 
         .artifact-action:hover {
-            background: var(--accent-gold);
-            border-color: var(--accent-gold);
-            color: var(--primary-dark);
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
         }
 
         /* Swiper overrides */
@@ -824,8 +850,8 @@
         }
 
         /* ============================================================
-               NEWS
-            ============================================================ */
+           NEWS
+           ============================================================ */
         .news-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -837,7 +863,7 @@
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-subtle);
+            border: 1px solid rgba(120, 15, 26, 0.08);
             transition: all var(--transition);
             display: flex;
             flex-direction: column;
@@ -917,8 +943,8 @@
         }
 
         /* ============================================================
-               GALLERY
-            ============================================================ */
+           GALLERY
+           ============================================================ */
         .gallery-filters {
             display: flex;
             gap: 10px;
@@ -930,7 +956,7 @@
         .gallery-filter {
             padding: 10px 22px;
             border-radius: 25px;
-            border: 1.5px solid var(--border-subtle);
+            border: 1.5px solid rgba(120, 15, 26, 0.12);
             background: var(--white);
             cursor: pointer;
             font-weight: 600;
@@ -942,9 +968,9 @@
 
         .gallery-filter.active,
         .gallery-filter:hover {
-            background: var(--accent-gold);
-            border-color: var(--accent-gold);
-            color: var(--primary-dark);
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
         }
 
         .masonry-grid {
@@ -976,7 +1002,7 @@
         .masonry-item .overlay {
             position: absolute;
             inset: 0;
-            background: rgba(15, 36, 66, 0.4);
+            background: rgba(120, 15, 26, 0.45);
             opacity: 0;
             transition: opacity var(--transition);
             display: flex;
@@ -997,8 +1023,8 @@
         }
 
         /* ============================================================
-               BOOKING
-            ============================================================ */
+           BOOKING
+           ============================================================ */
         .booking-section {
             background: var(--beige-bg);
         }
@@ -1010,7 +1036,8 @@
             padding: 40px;
             max-width: 720px;
             margin: 0 auto;
-            border: 1px solid rgba(23, 33, 51, 0.08);
+            border: 1px solid rgba(120, 15, 26, 0.08);
+            border-top: 4px solid var(--primary);
         }
 
         .booking-form {
@@ -1051,8 +1078,8 @@
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 0 3px rgba(196, 164, 74, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(183, 28, 28, 0.10);
             background: var(--white);
         }
 
@@ -1075,8 +1102,8 @@
         }
 
         /* ============================================================
-               ARTIFACT DB PAGE
-            ============================================================ */
+           ARTIFACT DB PAGE
+           ============================================================ */
         .page {
             display: none;
         }
@@ -1109,8 +1136,9 @@
 
         .db-filters select:focus,
         .db-filters input:focus {
-            border-color: var(--accent-gold);
+            border-color: var(--primary);
             outline: none;
+            box-shadow: 0 0 0 3px rgba(183, 28, 28, 0.08);
         }
 
         .db-filters input {
@@ -1125,8 +1153,8 @@
         }
 
         /* ============================================================
-               MODAL
-            ============================================================ */
+           MODAL
+           ============================================================ */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -1153,6 +1181,7 @@
             position: relative;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
             animation: modalIn 0.3s ease;
+            border-top: 4px solid var(--primary);
         }
 
         @keyframes modalIn {
@@ -1189,7 +1218,7 @@
         }
 
         .modal-close:hover {
-            background: var(--red-accent);
+            background: var(--primary);
             color: white;
         }
 
@@ -1210,6 +1239,7 @@
             background: var(--beige-bg);
             border-radius: var(--radius);
             margin-top: 16px;
+            border: 1px solid rgba(201, 168, 76, 0.2);
         }
 
         .qr-block img {
@@ -1218,12 +1248,13 @@
         }
 
         /* ============================================================
-               FOOTER
-            ============================================================ */
+           FOOTER
+           ============================================================ */
         .footer {
             background: var(--primary-dark);
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.85);
             padding: 50px 0 24px;
+            border-top: 4px solid var(--accent-gold);
         }
 
         .footer-grid {
@@ -1241,7 +1272,7 @@
 
         .footer-col p,
         .footer-col a {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.75);
             font-size: 0.9rem;
             line-height: 1.8;
             text-decoration: none;
@@ -1253,16 +1284,16 @@
         }
 
         .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            border-top: 1px solid rgba(255, 255, 255, 0.10);
             padding-top: 20px;
             text-align: center;
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.50);
         }
 
         /* ============================================================
-               RESPONSIVE
-            ============================================================ */
+           RESPONSIVE
+           ============================================================ */
         @media (max-width: 1024px) {
             .nav-desktop {
                 display: none;
@@ -1391,8 +1422,25 @@
 
             <div class="header-actions">
                 <div class="lang-switch">
-                    <button class="lang-btn active" onclick="setLanguage('vi')">VN</button>
-                    <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+                    <button class="lang-btn active" data-lang="vi" onclick="setLanguage('vi')">
+                        <!-- Vietnam Flag SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20">
+                            <rect width="30" height="20" fill="#DA251D"/>
+                            <polygon points="15,4 18,12 26,12 20,17 22,25 15,21 8,25 10,17 4,12 12,12" fill="#FFFF00"/>
+                        </svg>
+                    </button>
+                    <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">
+                        <!-- UK Flag SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20">
+                            <rect width="30" height="20" fill="#012169"/>
+                            <path d="M0,0 L30,20 M30,0 L0,20" stroke="#FFFFFF" stroke-width="4"/>
+                            <path d="M0,0 L30,20 M30,0 L0,20" stroke="#C8102E" stroke-width="2"/>
+                            <rect x="0" y="8" width="30" height="4" fill="#FFFFFF"/>
+                            <rect x="0" y="8" width="30" height="2" fill="#C8102E"/>
+                            <rect x="13" y="0" width="4" height="20" fill="#FFFFFF"/>
+                            <rect x="14" y="0" width="2" height="20" fill="#C8102E"/>
+                        </svg>
+                    </button>
                 </div>
                 <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
                     <span></span><span></span><span></span>
@@ -1695,9 +1743,9 @@
          * GLOBAL STATE
          * ============================================================
          */
-        let currentLang = 'vi';
-        let galleryFilter = 'all';
-        let swiperInstance = null;
+        var currentLang = 'vi';
+        var galleryFilter = 'all';
+        var swiperInstance = null;
 
         /**
          * ============================================================
@@ -1706,79 +1754,78 @@
          */
 
         // Exhibition data
-        const exhibitionData = [{
+        var exhibitionData = [{
             id: 'french',
             name_vi: 'Kháng chiến chống Pháp',
             name_en: 'French Resistance War',
             desc_vi: 'Những hiện vật quý từ thời kỳ 1945–1954, tái hiện cuộc kháng chiến trường kỳ của dân tộc.',
             desc_en: 'Precious artifacts from 1945–1954, recreating the long resistance war.',
-            // REPLACE with real museum image path
-            img: 'https://placehold.co/600x400/2d4a2d/white?text=1945-1954'
+            img: 'https://placehold.co/600x400/7a0f1a/white?text=1945-1954'
         }, {
             id: 'american',
             name_vi: 'Kháng chiến chống Mỹ',
             name_en: 'American War',
             desc_vi: 'Giai đoạn 1954–1975 với những chiến công hiển hách của LLVT Quân khu 3.',
             desc_en: 'The 1954–1975 period with glorious victories of MR3 Armed Forces.',
-            img: 'https://placehold.co/600x400/1a2f1f/white?text=1954-1975'
+            img: 'https://placehold.co/600x400/8b1a1a/white?text=1954-1975'
         }, {
             id: 'defence',
             name_vi: 'Xây dựng và bảo vệ Tổ quốc',
             name_en: 'National Defence',
             desc_vi: 'Thời kỳ sau 1975, xây dựng lực lượng vũ trang chính quy, hiện đại.',
             desc_en: 'Post-1975 era of building a regular, modern armed force.',
-            img: 'https://placehold.co/600x400/3d6b3d/white?text=1975-Nay'
+            img: 'https://placehold.co/600x400/6b1515/white?text=1975-Nay'
         }, {
             id: 'outdoor',
             name_vi: 'Trưng bày ngoài trời',
             name_en: 'Outdoor Exhibition',
             desc_vi: 'Khu vực trưng bày pháo, xe tăng, máy bay và khí tài quân sự cỡ lớn.',
             desc_en: 'Display area for artillery, tanks, aircraft, and large military equipment.',
-            img: 'https://placehold.co/600x400/5a5a5a/white?text=Outdoor'
+            img: 'https://placehold.co/600x400/5a1010/white?text=Outdoor'
         }];
 
         // Featured artifacts (carousel)
-        const artifactsData = [{
+        var artifactsData = [{
             name_vi: 'Pháo 37 mm',
             name_en: '37mm Cannon',
             desc_vi: 'Pháo phòng không hạng nhẹ, sử dụng trong kháng chiến chống Mỹ.',
             desc_en: 'Light anti-aircraft gun used in the American War.',
-            img: 'https://placehold.co/400x300/2d4a2d/white?text=37mm'
+            img: 'https://placehold.co/400x300/7a0f1a/white?text=37mm'
         }, {
             name_vi: 'Pháo 40 mm',
             name_en: '40mm Cannon',
             desc_vi: 'Pháo phòng không tầm trung, tham gia nhiều chiến dịch lớn.',
             desc_en: 'Medium-range AA gun, participated in major campaigns.',
-            img: 'https://placehold.co/400x300/1a2f1f/white?text=40mm'
+            img: 'https://placehold.co/400x300/8b1a1a/white?text=40mm'
         }, {
             name_vi: 'ZPU-2 14,5 mm',
             name_en: 'ZPU-2 14.5mm',
             desc_vi: 'Súng máy phòng không hai nòng, hiệu quả cao ở tầm thấp.',
             desc_en: 'Twin-barrel AA machine gun, highly effective at low altitude.',
-            img: 'https://placehold.co/400x300/c4a44a/1a2f1f?text=ZPU-2'
+            img: 'https://placehold.co/400x300/c9a84c/1a1a1a?text=ZPU-2'
         }, {
             name_vi: 'Pháo 100 mm',
             name_en: '100mm Cannon',
             desc_vi: 'Pháo mặt đất uy lực, hỗ trợ bộ binh hiệu quả.',
             desc_en: 'Powerful field gun, effective infantry support.',
-            img: 'https://placehold.co/400x300/3d6b3d/white?text=100mm'
+            img: 'https://placehold.co/400x300/6b1515/white?text=100mm'
         }, {
             name_vi: 'Pháo 105 mm M101',
             name_en: '105mm M101',
             desc_vi: 'Pháo Mỹ thu được, sử dụng trong nhiều trận đánh.',
             desc_en: 'Captured US howitzer, used in many battles.',
-            img: 'https://placehold.co/400x300/8b2020/white?text=105mm'
+            img: 'https://placehold.co/400x300/9a2020/white?text=105mm'
         }];
 
         // News data
-        const newsData = [{
+        var newsData = [{
             date_vi: '15/06/2025',
             date_en: 'Jun 15, 2025',
             cat_vi: 'Sự kiện',
             cat_en: 'Event',
             title_vi: 'Khai mạc triển lãm "Quân khu 3 – 55 năm hào hùng"',
             title_en: 'Opening of "MR3 – 55 Heroic Years" Exhibition',
-            img: 'https://placehold.co/600x350/2d4a2d/white?text=Event'
+            img: 'https://placehold.co/600x350/7a0f1a/white?text=Event'
         }, {
             date_vi: '08/06/2025',
             date_en: 'Jun 8, 2025',
@@ -1786,7 +1833,7 @@
             cat_en: 'Announcement',
             title_vi: 'Điều chỉnh giờ mở cửa dịp hè 2025',
             title_en: 'Summer 2025 Opening Hours Adjustment',
-            img: 'https://placehold.co/600x350/1a2f1f/white?text=Notice'
+            img: 'https://placehold.co/600x350/8b1a1a/white?text=Notice'
         }, {
             date_vi: '01/06/2025',
             date_en: 'Jun 1, 2025',
@@ -1794,72 +1841,72 @@
             cat_en: 'Exhibition',
             title_vi: 'Ra mắt bộ sưu tập hiện vật quý hiếm',
             title_en: 'Launch of Rare Artifact Collection',
-            img: 'https://placehold.co/600x350/3d6b3d/white?text=Exhibit'
+            img: 'https://placehold.co/600x350/6b1515/white?text=Exhibit'
         }];
 
         // Gallery data
-        const galleryData = [
-            { src: 'https://placehold.co/400x350/2d4a2d/white?text=Event+1', cat: 'events' },
-            { src: 'https://placehold.co/400x500/1a2f1f/white?text=Exhibit+1', cat: 'exhibits' },
-            { src: 'https://placehold.co/400x300/3d6b3d/white?text=Historical', cat: 'historical' },
-            { src: 'https://placehold.co/400x450/8b2020/white?text=Video', cat: 'video' },
-            { src: 'https://placehold.co/400x380/c4a44a/1a2f1f?text=Event+2', cat: 'events' },
-            { src: 'https://placehold.co/400x420/5a5a5a/white?text=Exhibit+2', cat: 'exhibits' },
-            { src: 'https://placehold.co/400x320/2d4a2d/white?text=Historical+2', cat: 'historical' },
-            { src: 'https://placehold.co/400x400/1a2f1f/white?text=Video+2', cat: 'video' }
+        var galleryData = [
+            { src: 'https://placehold.co/400x350/7a0f1a/white?text=Event+1', cat: 'events' },
+            { src: 'https://placehold.co/400x500/8b1a1a/white?text=Exhibit+1', cat: 'exhibits' },
+            { src: 'https://placehold.co/400x300/6b1515/white?text=Historical', cat: 'historical' },
+            { src: 'https://placehold.co/400x450/9a2020/white?text=Video', cat: 'video' },
+            { src: 'https://placehold.co/400x380/c9a84c/1a1a1a?text=Event+2', cat: 'events' },
+            { src: 'https://placehold.co/400x420/5a1010/white?text=Exhibit+2', cat: 'exhibits' },
+            { src: 'https://placehold.co/400x320/7a0f1a/white?text=Historical+2', cat: 'historical' },
+            { src: 'https://placehold.co/400x400/8b1a1a/white?text=Video+2', cat: 'video' }
         ];
 
         // Full artifact database (for the DB page)
-        const fullArtifactDB = [{
+        var fullArtifactDB = [{
             name_vi: 'Pháo 37 mm',
             period: 'Chống Mỹ',
             type: 'Vũ khí',
-            img: 'https://placehold.co/300/2d4a2d/white?text=37mm'
+            img: 'https://placehold.co/300/7a0f1a/white?text=37mm'
         }, {
             name_vi: 'Pháo 40 mm',
             period: 'Chống Pháp',
             type: 'Vũ khí',
-            img: 'https://placehold.co/300/1a2f1f/white?text=40mm'
+            img: 'https://placehold.co/300/8b1a1a/white?text=40mm'
         }, {
             name_vi: 'ZPU-2 14,5 mm',
             period: 'Chống Mỹ',
             type: 'Vũ khí',
-            img: 'https://placehold.co/300/c4a44a/1a2f1f?text=ZPU-2'
+            img: 'https://placehold.co/300/c9a84c/1a1a1a?text=ZPU-2'
         }, {
             name_vi: 'Pháo 100 mm',
             period: 'Bảo vệ Tổ quốc',
             type: 'Vũ khí',
-            img: 'https://placehold.co/300/3d6b3d/white?text=100mm'
+            img: 'https://placehold.co/300/6b1515/white?text=100mm'
         }, {
             name_vi: 'Pháo 105 mm M101',
             period: 'Chống Mỹ',
             type: 'Vũ khí',
-            img: 'https://placehold.co/300/8b2020/white?text=105mm'
+            img: 'https://placehold.co/300/9a2020/white?text=105mm'
         }, {
             name_vi: 'Súng trường K44',
             period: 'Chống Pháp',
             type: 'Vũ khí',
-            img: 'https://placehold.co/300/5a5a5a/white?text=K44'
+            img: 'https://placehold.co/300/5a1010/white?text=K44'
         }, {
             name_vi: 'Áo trấn thủ',
             period: 'Bảo vệ Tổ quốc',
             type: 'Quân trang',
-            img: 'https://placehold.co/300/2d4a2d/white?text=Uniform'
+            img: 'https://placehold.co/300/7a0f1a/white?text=Uniform'
         }, {
             name_vi: 'Mũ cối',
             period: 'Chống Mỹ',
             type: 'Quân trang',
-            img: 'https://placehold.co/300/1a2f1f/white?text=Helmet'
+            img: 'https://placehold.co/300/8b1a1a/white?text=Helmet'
         }, {
             name_vi: 'Nhật ký chiến trường',
             period: 'Chống Mỹ',
             type: 'Tài liệu',
-            img: 'https://placehold.co/300/c4a44a/1a2f1f?text=Diary'
+            img: 'https://placehold.co/300/c9a84c/1a1a1a?text=Diary'
         }, {
             name_vi: 'Xe tăng T-54',
             period: 'Chống Mỹ',
             type: 'Phương tiện',
-            img: 'https://placehold.co/300/3d6b3d/white?text=T54'
+            img: 'https://placehold.co/300/6b1515/white?text=T54'
         }];
 
         /**
@@ -1870,28 +1917,23 @@
         function setLanguage(lang) {
             currentLang = lang;
 
-            // Toggle buttons
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.lang-btn').forEach(b => {
-                const label = b.textContent.trim();
-                if ((lang === 'vi' && label === 'VN') || (lang === 'en' && label === 'EN')) {
-                    b.classList.add('active');
+            document.querySelectorAll('.lang-btn').forEach(function(btn) {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
                 }
             });
 
-            // Update all elements with data-vi / data-en
-            document.querySelectorAll('[data-vi][data-en]').forEach(el => {
-                const text = el.getAttribute('data-' + lang);
+            document.querySelectorAll('[data-vi][data-en]').forEach(function(el) {
+                var text = el.getAttribute('data-' + lang);
                 if (text) el.textContent = text;
             });
 
-            // Update placeholders
-            document.querySelectorAll('[data-vi-placeholder][data-en-placeholder]').forEach(el => {
-                const placeholder = el.getAttribute('data-' + lang + '-placeholder');
+            document.querySelectorAll('[data-vi-placeholder][data-en-placeholder]').forEach(function(el) {
+                var placeholder = el.getAttribute('data-' + lang + '-placeholder');
                 if (placeholder) el.placeholder = placeholder;
             });
 
-            // Re-render dynamic content
             renderExhibitions();
             renderArtifacts();
             renderNews();
@@ -1901,12 +1943,12 @@
         }
 
         function updateNavLinks() {
-            document.querySelectorAll('.nav-desktop a[data-vi]').forEach(a => {
-                const text = a.getAttribute('data-' + currentLang);
+            document.querySelectorAll('.nav-desktop a[data-vi]').forEach(function(a) {
+                var text = a.getAttribute('data-' + currentLang);
                 if (text) a.textContent = text;
             });
-            document.querySelectorAll('.mobile-menu a[data-vi]').forEach(a => {
-                const text = a.getAttribute('data-' + currentLang);
+            document.querySelectorAll('.mobile-menu a[data-vi]').forEach(function(a) {
+                var text = a.getAttribute('data-' + currentLang);
                 if (text) a.textContent = text;
             });
         }
@@ -1951,7 +1993,7 @@
          * ============================================================
          */
         window.addEventListener('scroll', function() {
-            const header = document.getElementById('header');
+            var header = document.getElementById('header');
             if (window.scrollY > 60) {
                 header.classList.add('scrolled');
             } else {
@@ -1965,7 +2007,7 @@
          * ============================================================
          */
         function renderExhibitions() {
-            const grid = document.getElementById('exhibitionGrid');
+            var grid = document.getElementById('exhibitionGrid');
             grid.innerHTML = exhibitionData.map(function(e) {
                 return `
                     <div class="exh-card" onclick="showExhibitionDetail('${e.id}')">
@@ -1981,15 +2023,14 @@
                 `;
             }).join('');
 
-            // Re-apply language to dynamic elements
             document.querySelectorAll('#exhibitionGrid [data-vi][data-en]').forEach(function(el) {
-                const text = el.getAttribute('data-' + currentLang);
+                var text = el.getAttribute('data-' + currentLang);
                 if (text) el.textContent = text;
             });
         }
 
         function showExhibitionDetail(id) {
-            const exh = exhibitionData.find(function(e) { return e.id === id; });
+            var exh = exhibitionData.find(function(e) { return e.id === id; });
             if (!exh) return;
             document.getElementById('modalBody').innerHTML = `
                 <img src="${exh.img}" alt="${currentLang === 'vi' ? exh.name_vi : exh.name_en}" />
@@ -1999,9 +2040,8 @@
                     Thông tin chi tiết đang được cập nhật.
                 </p>
             `;
-            // Apply language to modal content
             document.querySelectorAll('#modalBody [data-vi][data-en]').forEach(function(el) {
-                const text = el.getAttribute('data-' + currentLang);
+                var text = el.getAttribute('data-' + currentLang);
                 if (text) el.textContent = text;
             });
             document.getElementById('modalOverlay').classList.add('active');
@@ -2014,7 +2054,7 @@
          * ============================================================
          */
         function renderArtifacts() {
-            const slides = document.getElementById('artifactSlides');
+            var slides = document.getElementById('artifactSlides');
             slides.innerHTML = artifactsData.map(function(a) {
                 return `
                     <div class="swiper-slide">
@@ -2034,7 +2074,6 @@
                 `;
             }).join('');
 
-            // Destroy and re-create swiper
             if (swiperInstance) swiperInstance.destroy();
             swiperInstance = new Swiper('#artifactSwiper', {
                 slidesPerView: 1,
@@ -2051,19 +2090,18 @@
         }
 
         function showArtifactDetail(name) {
-            const art = artifactsData.find(function(a) { return a.name_vi === name; }) || artifactsData[0];
+            var art = artifactsData.find(function(a) { return a.name_vi === name; }) || artifactsData[0];
             document.getElementById('modalBody').innerHTML = `
                 <img src="${art.img}" alt="${currentLang === 'vi' ? art.name_vi : art.name_en}" />
                 <h3>${currentLang === 'vi' ? art.name_vi : art.name_en}</h3>
                 <p>${currentLang === 'vi' ? art.desc_vi : art.desc_en}</p>
                 <div class="qr-block">
-                    <!-- REPLACE with real QR code image -->
                     <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='white'/%3E%3Ctext x='12' y='55' font-size='7'%3EQR:${encodeURIComponent(name)}%3C/text%3E%3C/svg%3E" alt="QR Code" />
                     <p style="margin-top:8px;font-size:0.85rem;color:#666;" data-vi="Quét mã để xem thông tin chi tiết" data-en="Scan for detailed info">Quét mã để xem thông tin chi tiết</p>
                 </div>
             `;
             document.querySelectorAll('#modalBody [data-vi][data-en]').forEach(function(el) {
-                const text = el.getAttribute('data-' + currentLang);
+                var text = el.getAttribute('data-' + currentLang);
                 if (text) el.textContent = text;
             });
             document.getElementById('modalOverlay').classList.add('active');
@@ -2074,13 +2112,12 @@
             document.getElementById('modalBody').innerHTML = `
                 <h3>QR Code – ${name}</h3>
                 <div class="qr-block">
-                    <!-- REPLACE with real QR code image -->
                     <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='white'/%3E%3Ctext x='12' y='55' font-size='7'%3EQR:${encodeURIComponent(name)}%3C/text%3E%3C/svg%3E" alt="QR Code" />
                     <p data-vi="Quét mã QR này tại bảo tàng để xem thông tin hiện vật." data-en="Scan this QR at the museum for artifact info.">Quét mã QR này tại bảo tàng để xem thông tin hiện vật.</p>
                 </div>
             `;
             document.querySelectorAll('#modalBody [data-vi][data-en]').forEach(function(el) {
-                const text = el.getAttribute('data-' + currentLang);
+                var text = el.getAttribute('data-' + currentLang);
                 if (text) el.textContent = text;
             });
             document.getElementById('modalOverlay').classList.add('active');
@@ -2093,7 +2130,7 @@
          * ============================================================
          */
         function renderNews() {
-            const grid = document.getElementById('newsGrid');
+            var grid = document.getElementById('newsGrid');
             grid.innerHTML = newsData.map(function(n) {
                 return `
                     <div class="news-card">
@@ -2111,7 +2148,7 @@
             }).join('');
 
             document.querySelectorAll('#newsGrid [data-vi][data-en]').forEach(function(el) {
-                const text = el.getAttribute('data-' + currentLang);
+                var text = el.getAttribute('data-' + currentLang);
                 if (text) el.textContent = text;
             });
         }
@@ -2122,8 +2159,8 @@
          * ============================================================
          */
         function renderGallery() {
-            const grid = document.getElementById('galleryGrid');
-            const filtered = galleryFilter === 'all' ?
+            var grid = document.getElementById('galleryGrid');
+            var filtered = galleryFilter === 'all' ?
                 galleryData :
                 galleryData.filter(function(g) { return g.cat === galleryFilter; });
 
@@ -2143,14 +2180,13 @@
                 <p style="text-align:center;margin-top:12px;color:#888;" data-vi="Thư viện ảnh bảo tàng" data-en="Museum photo gallery">Thư viện ảnh bảo tàng</p>
             `;
             document.querySelectorAll('#modalBody [data-vi][data-en]').forEach(function(el) {
-                const text = el.getAttribute('data-' + currentLang);
+                var text = el.getAttribute('data-' + currentLang);
                 if (text) el.textContent = text;
             });
             document.getElementById('modalOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
-        // Gallery filter listeners
         document.getElementById('galleryFilters').addEventListener('click', function(e) {
             if (e.target.classList.contains('gallery-filter')) {
                 document.querySelectorAll('.gallery-filter').forEach(function(f) { f.classList.remove('active'); });
@@ -2182,7 +2218,7 @@
          * ============================================================
          */
         function goToSection(id) {
-            const section = document.getElementById(id);
+            var section = document.getElementById(id);
             if (section) {
                 section.scrollIntoView({ behavior: 'smooth' });
             }
@@ -2233,7 +2269,6 @@
             }).join('');
         }
 
-        // DB filter change events
         document.getElementById('periodFilter').addEventListener('change', renderArtifactDB);
         document.getElementById('typeFilter').addEventListener('change', renderArtifactDB);
 
@@ -2269,9 +2304,7 @@
             updateNavLinks();
         }
 
-        // Run on page load
         document.addEventListener('DOMContentLoaded', init);
-        // Also run immediately if DOM is already ready
         if (document.readyState === 'complete' || document.readyState === 'interactive') {
             init();
         }
